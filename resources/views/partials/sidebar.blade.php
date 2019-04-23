@@ -8,7 +8,7 @@
                 Mantenimiento
             </li>
             <li class="nav-item nav-dropdown">
-                <a class="nav-link nav-dropdown-toggle" href="#"><i class="icon-bag"></i> Gestión de Clientes</a>
+                <a class="nav-link nav-dropdown-toggle" href="#"><i class="far fa-address-book"></i> Gestión de Clientes</a>
                 <ul class="nav-dropdown-items">
                     <li @click="menu=1" class="nav-item">
                         <a class="nav-link" href="#"><i class="icon-bag"></i> Clientes</a>
@@ -22,7 +22,7 @@
                 <a class="nav-link nav-dropdown-toggle" href="#"><i class="icon-wallet"></i> Gestión de Vehiculos</a>
                 <ul class="nav-dropdown-items">
                     <li @click="menu=3" class="nav-item">
-                        <a class="nav-link" href="#"><i class="icon-wallet"></i> Vehiculos</a>
+                        <a class="nav-link" href="#"><i class="fas fa-car-side"></i> Vehiculos</a>
                     </li>
                     <li @click="menu=4" class="nav-item">
                         <a class="nav-link" href="#"><i class="icon-notebook"></i> Ordenes</a>
