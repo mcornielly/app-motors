@@ -6,8 +6,9 @@ use App\Client;
 use Faker\Generator as Faker;
 
 $factory->define(Client::class, function (Faker $faker) {
+
     return [
-       'code' => rand(1,150), 
+       'code' => str_pad(rand(1,150),6,"0",STR_PAD_LEFT), 
        'name' => $faker->name, 
        'razon_social' => $faker->company, 
        'nickname' => $faker->text(8), 

@@ -14,7 +14,9 @@ class ClientController extends Controller
      */
     public function index()
     {
-        //
+        $clients = Client::orderBy('id', 'DESC')->get();
+
+        return $clients;
     }
 
     /**
@@ -24,7 +26,11 @@ class ClientController extends Controller
      */
     public function create()
     {
-        //
+        $counter = Client::all()->count();
+        $counter = $counter + 1;
+        $code = str_pad($counter,6,"0",STR_PAD_LEFT);
+
+        return compact('code');
     }
 
     /**
@@ -35,7 +41,32 @@ class ClientController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'code'  => 'required|unique:clients',
+            'name'  => 'required|string',
+            'razon_social'  => 'required|string',
+            'nickname'  => 'required|string',
+            'email'  => 'required|string|email|unique:clients',
+            'birth_date' => 'required|date_format:Y-m-d',
+            'reference'     => 'nullable|max:100',
+            'cp'  => 'required',
+            'cuit'  => 'required',
+            'tax'  => 'required|numeric|min:0',
+
+        ]);
+        
+        $client = new Client();
+        $client->code = $request->code;
+        $client->name = $request->name;
+        $client->razon_social = $request->razon_social;
+        $client->nickname = $request->nickname;
+        $client->email = $request->email;
+        $client->birth_date = $request->birth_date;
+        $client->reference = $request->reference;
+        $client->cp = $request->cp;
+        $client->cuit = $request->cuit;
+        $client->tax = $request->tax;
+        $client->save();
     }
 
     /**
@@ -69,7 +100,18 @@ class ClientController extends Controller
      */
     public function update(Request $request, Client $client)
     {
-        //
+        $client = Client::findOrFail($client->id);
+        $client->code = $request->code;
+        $client->name = $request->name;
+        $client->rason_social = $request->rason_social;
+        $client->nickaname = $request->nickaname;
+        $client->email = $request->email;
+        $client->birth_date = $request->birth_date;
+        $client->reference = $request->reference;
+        $client->cp = $request->cp;
+        $client->cuit = $request->cuit;
+        $client->tax = $request->tax;
+        $client->save();
     }
 
     /**

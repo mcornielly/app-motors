@@ -14,3 +14,6 @@
 Route::get('/', function () {
     return view('container/container');
 });
+
+
+Route::resource('clientes', 'ClientController');

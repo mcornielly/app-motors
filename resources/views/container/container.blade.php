@@ -2,10 +2,10 @@
 
 @section('container')
 	<template v-if="menu==0">
-		<example-component></example-component>
+		<h1>       Dashboard</h1>
 	</template>
 	<template v-if="menu==1">
-		<h1>       Cliente</h1>
+		<clients-component></clients-component>
 	</template>
 	<template v-if="menu==2">
 		<h1>       Direcciones</h1>
