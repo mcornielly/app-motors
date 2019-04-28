@@ -12,11 +12,30 @@ class ClientController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $clients = Client::orderBy('id', 'DESC')->get();
+        // if(!$request->ajax()) return redirect('/');
+        $clients = Client::orderBy('id', 'DESC')->paginate(8);
+        
+        return [
+            'pagination' => [
+                'total'         => $clients->total(),
+                'current_page'  => $clients->currentPage(),
+                'per_page'      => $clients->perPage(),
+                'last_page'     => $clients->lastPage(),
+                'from'          => $clients->firstItem(),
+                'to'            => $clients->lastItem(),
+            ],
+         'clients' => $clients
+        ];
+    }
 
-        return $clients;
+    public function search($query, $queryField)
+    {
+
+        $clients = Client::where($query,'like','%' . $queryField . '%')->latest()->paginate(8);
+
+        return compact('clients');
     }
 
     /**
@@ -26,6 +45,8 @@ class ClientController extends Controller
      */
     public function create()
     {
+        // if(!$request->ajax()) return redirect('/');
+
         $counter = Client::all()->count();
         $counter = $counter + 1;
         $code = str_pad($counter,6,"0",STR_PAD_LEFT);
@@ -41,8 +62,9 @@ class ClientController extends Controller
      */
     public function store(Request $request)
     {
+        // if(!$request->ajax()) return redirect('/');
+
         $request->validate([
-            'code'  => 'required|unique:clients',
             'name'  => 'required|string',
             'razon_social'  => 'required|string',
             'nickname'  => 'required|string',
@@ -100,11 +122,26 @@ class ClientController extends Controller
      */
     public function update(Request $request, Client $client)
     {
-        $client = Client::findOrFail($client->id);
+        // if(!$request->ajax()) return redirect('/');
+
+        $client = Client::findOrFail($request->id);
+
+        $request->validate([
+            'name'  => 'required|string',
+            'razon_social'  => 'required|string',
+            'nickname'  => 'required|string',
+            'email'  => 'required|string|email|unique:clients,email,'.$id, 
+            'birth_date' => 'required|date_format:Y-m-d',
+            'reference'     => 'nullable|max:100',
+            'cp'  => 'required',
+            'cuit'  => 'required',
+            'tax'  => 'required|numeric|min:0',
+        ]);
+
         $client->code = $request->code;
         $client->name = $request->name;
-        $client->rason_social = $request->rason_social;
-        $client->nickaname = $request->nickaname;
+        $client->razon_social = $request->razon_social;
+        $client->nickname = $request->nickname;
         $client->email = $request->email;
         $client->birth_date = $request->birth_date;
         $client->reference = $request->reference;

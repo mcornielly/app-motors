@@ -14,9 +14,8 @@
     <title>Sistema Ventas - IncanatoIT</title>
     
     <!-- css styles -->
-    <link href="css/app.css" rel="stylesheet">
     <link href="css/template.css" rel="stylesheet">
-    <script src="https://code.iconify.design/1/1.0.1/iconify.min.js"></script>
+    <link href="css/app.css" rel="stylesheet">
     
 </head>
 

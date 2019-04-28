@@ -17,40 +17,34 @@
                 </div>
                 <div class="card-body">
                     <div class="form-group row">
-                        <div class="col-md-8">
-                          <div class="input-group">
-                                <select class="form-control col-md-3" id="opcion" name="opcion">
-                                  <option value="nombre">Nombre</option>
-                                  <option value="descripcion">Descripción</option>
-                                </select>
-                      
-                            <input class="form-control" id="input3-group2" type="text" name="input3-group2" placeholder="Search">
+                        <div class="col-md-2">
+                            <select class="form-control" v-model="queryField">
+                              <option value="name">Nombre</option>
+                              <option value="email">Email</option>
+                            </select>
+                        </div>
+                  
+                        <div class="input-group col-md-6">
+                            <input class="form-control" v-model="query" type="text" placeholder="Search">
                             <span class="input-group-append">
                               <button class="btn btn-primary" type="button">
                                 <i class="fa fa-search"></i> Buscar
                               </button>
                             </span>
-                          </div>
                         </div>
-                        <!-- <input type="text" id="texto" name="texto" class="form-control" placeholder="Texto a buscar">
-                        <button type="submit" class="btn btn-primary"><i class="fa fa-search"></i> Buscar</button> -->
                     </div>
                    
-                    <div class="table-responsive">
-                        <table class="table table-bordered table-striped table-sm">
-                            <thead class="thead-dark">
+                    <div id="div1" class="table-responsive-sm">
+                        <table class="table table-bordered table-striped">
+                            <thead>
                                 <tr>
-                                    <th width="300">Opciones</th>
+                                    <th width="">Opciones</th>
                                     <th>Código</th>
-                                    <th width="400">Nombre</th>
+                                    <th width="300">Nombre</th>
                                     <th width="300">Razópn Social</th>
                                     <th>Nickname</th>
                                     <th>Email</th>
-                                    <th width="200">Fecha Nac</th>
-                                    <th width="500">Referencia</th>
-                                    <th>CP</th>
-                                    <th>CUIT</th>
-                                    <th>Imp</th>
+                                    <th width="100">Fecha Nac</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -59,7 +53,7 @@
                                     <button @click="openModal('client', 'update', client)" type="button" class="col-3 btn btn-warning btn-sm">
                                       <i class="icon-pencil"></i>
                                     </button> &nbsp;
-                                    <button type="button" class="col-3 btn btn-info btn-sm">
+                                    <button @click="openModal('client', 'show', client)" type="button" class="col-3 btn btn-info btn-sm">
                                       <i class="icon-eye"></i>
                                     </button> &nbsp;
                                     <button type="button" class="col-3 btn btn-danger btn-sm">
@@ -72,49 +66,38 @@
                                     <td v-text="client.nickname"></td>
                                     <td v-text="client.email"></td>
                                     <td v-text="client.birth_date"></td>
-                                    <td v-text="client.reference"></td>
-                                    <td v-text="client.cp"></td>
-                                    <td v-text="client.cuit"></td>
-                                    <td v-text="client.tax"></td>
-                                    <!-- <td>
-                                        <span class="badge badge-success">Activo</span>
-                                    </td> -->
+                                </tr>
+                                <tr class="table-danger" v-show="!arrayClients.length">
+                                    <td colspan="7">
+                                       Lo sentimos no se encuentra la información de este Cliente :(  ! 
+                                    </td>
                                 </tr>
                             </tbody>
                         </table>
                     </div>
-                    <nav>
-                        <ul class="pagination">
-                            <li class="page-item">
-                                <a class="page-link" href="#">Ant</a>
-                            </li>
-                            <li class="page-item active">
-                                <a class="page-link" href="#">1</a>
-                            </li>
-                            <li class="page-item">
-                                <a class="page-link" href="#">2</a>
-                            </li>
-                            <li class="page-item">
-                                <a class="page-link" href="#">3</a>
-                            </li>
-                            <li class="page-item">
-                                <a class="page-link" href="#">4</a>
-                            </li>
-                            <li class="page-item">
-                                <a class="page-link" href="#">Sig</a>
-                            </li>
-                        </ul>
-                    </nav>
+                    <!-- PaginationComponent -->
+                    <pagination-component
+                        v-if="pagination.last_page > 1"
+                        :pagination="pagination"
+                        :offset="offset"
+                        @paginate="query === '' ? getClients() : searchData()"
+                    ></pagination-component>
+                    <!-- End PaginationComponent -->
                 </div>
             </div>
             <!-- Fin ejemplo de tabla Listado -->
         </div>
         <!--Inicio del modal agregar/actualizar-->
-        <div class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" style="display: none;" aria-hidden="true" :class="{'show' : modal}">
+        <div class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" style="display: none;" aria-hidden="true" :class="{'show_' : modal}">
             <div class="modal-dialog modal-primary modal-lg" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h4 class="modal-title float-left" v-text="titleModal"></h4>
+                        <h4 v-show="typeAction == 1" class="modal-title float-left">
+                            <i class="fas fa-user-tag">&nbsp;</i>{{ titleModal }}
+                        </h4>
+                        <h4 v-show="typeAction == 2" class="modal-title float-left">
+                            <i class="fas fa-user-edit">&nbsp;</i>{{ titleModal }}
+                        </h4>
                         <button type="button" class="close" aria-label="Close" @click="closeModal()">
                           <span aria-hidden="true">×</span>
                         </button>
@@ -128,7 +111,7 @@
                                </div>
                                 <div class="col-md-6">
                                     <button v-if="personData==0" @click="personData=1" class="btn btn-primary btn-sm float-right">Datos Personales</button>
-                                    <button v-if="personData==1" @click="personData=0" class="btn btn-success btn-sm float-right">Agregar Dirección</button>
+                                    <button v-if="personData==1" @click="personData=0" class="btn btn-success btn-sm float-right"><i class="icon-plus"></i>&nbsp; Dirección</button>
                                 </div>
                             </div>
                             <hr>
@@ -214,7 +197,7 @@
                         <button type="button" class="btn btn-secondary" @click="closeModal()">Cerrar</button>
 
                         <button type="button" class="btn btn-primary" v-if="typeAction==1" @click="newClient()">Guardar</button>
-                        <button type="button" class="btn btn-primary" v-if="typeAction==2">Actualizar</button>
+                        <button type="button" class="btn btn-primary" v-if="typeAction==2" @click="updateClient()">Actualizar</button>
                     </div>
                 </div>
                 <!-- /.modal-content -->
@@ -245,6 +228,9 @@
             <!-- /.modal-dialog -->
         </div>
         <!-- Fin del modal Eliminar -->
+        <transition name="fade" mode="out-in">
+            <show-component :show='modalShow' :client="arrayClient"  @closeRequest='closeModal'></show-component>
+        </transition>
         <vue-snotify></vue-snotify>
     </main>
 </template>
@@ -253,6 +239,7 @@
     export default {
         data () {
             return {
+                client_id: 0,
                 code: '',
                 name: '',
                 razon_social: '',
@@ -264,29 +251,61 @@
                 cuit: '',
                 tax: '',
                 arrayClients: [],
+                arrayClient: [],
                 modal: 0,
+                modalShow: '',
                 titleModal: '',
                 typeAction: 0,
                 personData: 0,
                 errors: [],
-                arrayError: []
+                arrayError: [],
+                pagination: {
+                    current_page: 1
+                },
+                offset: 3,
+                query: '',
+                queryField: 'name' 
+
+            }
+        },
+        watch: {
+                query: function(newQ, old) {
+                  if (newQ === "") {
+                    this.getClients();
+                  } else {
+                    this.searchData();
+                }
             }
         },
         methods: {
             getClients() {
                 let me = this;
-                axios.get('/clientes').then(function (response) {
+                axios.get('/clientes?page=' + this.pagination.current_page).then(function (response) {
                     // handle success
-                    me.arrayClients = response.data;
+                    var result = response.data
+                    me.arrayClients = result.clients.data;
+                    me.pagination = result.clients;
                   })
                   .catch(function (error) {
                     // handle error
                     console.log(error);
                 })
             },
+            searchData() {
+                axios.get('api/clientes/buscar/'+ this.queryField + '/' + this.query)
+                    .then(response => {
+                        // handle success
+                        var result = response.data
+                        console.log(result)
+                        this.arrayClients = result.clients.data;
+                        this.pagination = result.clients;
+                    }).catch(function (error) {
+                        // handle error
+                        console.log(error);
+                    })
+            },
             newClient() {
                 this.errors = {}
-                
                 let me = this;
 
                 axios.post('/clientes',{
@@ -305,6 +324,40 @@
                     me.closeModal();
                     me.getClients();
                 }).catch(function(error) {
+                    if(error.response.status === 422) {
+                        me.errors = error.response.data.errors
+                        me.arrayError = me.errors
+                        console.log(me.errors)
+                    }
+                    me.$snotify.error(
+                      "Se presento un error vuelva a intentarlo.",
+                      "Error"
+                    );
+                });
+
+            },
+            updateClient() {
+                this.errors = {}
+                let me = this;
+
+                axios.put(`/clientes/${this.client_id}`,{
+                  'id': this.client_id,  
+                  'code': this.code,  
+                  'name': this.name,
+                  'razon_social': this.razon_social,
+                  'nickname': this.nickname,
+                  'email':  this.email,
+                  'birth_date': this.birth_date,
+                  'reference': this.reference,
+                  'cp': this.cp,
+                  'cuit': this.cuit,
+                  'tax': this.tax
+                }).then(function(response){
+                    me.$snotify.success("Cliente Actualizado", "Exitosamente..!");
+                    me.closeModal();
+                    me.getClients();
+                }).catch(function(error) {
+                      console.log(error)
                     if(error.response.status === 422) {
                         me.errors = error.response.data.errors
                         me.arrayError = me.errors
@@ -355,6 +408,7 @@
             },
             closeModal() {
                 this.personData = 0;
+                this.modalShow = '';
                 this.modal = 0;
                 this.titleModal = '';
                 this.typeAction = 0;
@@ -371,6 +425,7 @@
                 this.tax ='';
             },
             openModal(model, action, data = []) {
+                this.errors = {};
                 switch (model) {
                     case "client":
                         switch (action) {
@@ -386,11 +441,10 @@
                                     // handle error
                                     console.log(error);
                                 })
-
-                                this.errors = {};
+                                this.modal = 1;
                                 this.personData = 1;
                                 this.typeAction = 1;
-                                this.modal = 1;
+                                this.titleModal = 'Nuevo Cliente'
                                 this.name = '';
                                 this.razon_social = '';
                                 this.nickname = '';
@@ -400,10 +454,30 @@
                                 this.cp = '';
                                 this.cuit = '';
                                 this.tax ='';
-                                this.titleModal = 'Nuevo Cliente'
                                 break;
                             case "update":
-                                // statements_def
+                                // console.log(data)
+                                this.modal = 1;
+                                this.personData = 1;
+                                this.typeAction = 2;
+                                this.titleModal = 'Actualizar Cliente';
+                                this.client_id = data['id'];
+                                this.code = data['code'];
+                                this.name = data['name'];
+                                this.razon_social = data['razon_social'];
+                                this.nickname = data['nickname'];
+                                this.email = data['email'];
+                                this.birth_date = data['birth_date'];
+                                this.reference = data['reference'];
+                                this.cp = data['cp'];
+                                this.cuit = data['cuit'];
+                                this.tax = data['tax'];
+                                break;
+                            case "show":
+                                this.modalShow = 'show_';
+                                this.arrayClient = data;
+                                // this.$children[2].client = data;
+
                                 break;
                         }
 
@@ -424,16 +498,11 @@
         width: 100% !important;
         position: absolute !important;
     }
-    .show{
+    .show_{
         display: list-item !important;
         opacity:  1 !important;
         position: absolute !important;
-        background-color: #3c29297a !important; 
-    }
-    .invalid-feedback {
-        display: none;
-        margin-top: .25rem;
-        font-size: .875rem;
-        color: #f86c6b; 
-    }
+        background-color: #3c29297a !important;
+        transition: all 500ms !important;
+    }    
 </style> 
