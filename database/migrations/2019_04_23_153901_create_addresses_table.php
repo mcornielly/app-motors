@@ -22,10 +22,12 @@ class CreateAddressesTable extends Migration
             $table->string('phone_number');
             $table->string('nextel_number');
             $table->string('cell_number');
+            $table->softDeletes();
             $table->timestamps();
 
             //Relation
-            $table->foreign('client_id')->references('id')->on('clients');
+            $table->foreign('client_id')->references('id')->on('clients')
+                    ->onDelete('cascade');
 
         });
     }

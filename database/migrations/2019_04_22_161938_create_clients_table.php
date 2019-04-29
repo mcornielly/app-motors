@@ -25,6 +25,7 @@ class CreateClientsTable extends Migration
             $table->string('cp');
             $table->string('cuit');
             $table->double('tax',2);
+            $table->softDeletes();
             $table->timestamps();
         });
     }

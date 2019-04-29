@@ -2000,6 +2000,21 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
@@ -2034,14 +2049,14 @@ __webpack_require__.r(__webpack_exports__);
   watch: {
     query: function query(newQ, old) {
       if (newQ === "") {
-        this.getClients();
+        this.getData();
       } else {
         this.searchData();
       }
     }
   },
   methods: {
-    getClients: function getClients() {
+    getData: function getData() {
       var me = this;
       axios.get('/clientes?page=' + this.pagination.current_page).then(function (response) {
         // handle success
@@ -2067,7 +2082,7 @@ __webpack_require__.r(__webpack_exports__);
         console.log(error);
       });
     },
-    newClient: function newClient() {
+    store: function store() {
       this.errors = {};
       var me = this;
       axios.post('/clientes', {
@@ -2084,7 +2099,7 @@ __webpack_require__.r(__webpack_exports__);
       }).then(function (response) {
         me.$snotify.success("Cliente Registrado", "Exitosamente..!");
         me.closeModal();
-        me.getClients();
+        me.getData();
       })["catch"](function (error) {
         if (error.response.status === 422) {
           me.errors = error.response.data.errors;
@@ -2095,7 +2110,7 @@ __webpack_require__.r(__webpack_exports__);
         me.$snotify.error("Se presento un error vuelva a intentarlo.", "Error");
       });
     },
-    updateClient: function updateClient() {
+    update: function update() {
       this.errors = {};
       var me = this;
       axios.put("/clientes/".concat(this.client_id), {
@@ -2113,10 +2128,8 @@ __webpack_require__.r(__webpack_exports__);
       }).then(function (response) {
         me.$snotify.success("Cliente Actualizado", "Exitosamente..!");
         me.closeModal();
-        me.getClients();
+        me.getData();
       })["catch"](function (error) {
-        console.log(error);
-
         if (error.response.status === 422) {
           me.errors = error.response.data.errors;
           me.arrayError = me.errors;
@@ -2124,6 +2137,43 @@ __webpack_require__.r(__webpack_exports__);
         }
 
         me.$snotify.error("Se presento un error vuelva a intentarlo.", "Error");
+      });
+    },
+    destroy: function destroy(client) {
+      var _this2 = this;
+
+      this.$snotify.clear();
+      this.$snotify.confirm("Este registro solo podrá se activado por el Administrador!", "Eliminar Registro.?", {
+        showProgressBar: false,
+        closeOnClick: false,
+        pauseOnHover: true,
+        buttons: [{
+          text: "Si",
+          action: function action(toast) {
+            _this2.$snotify.remove(toast.id);
+
+            axios["delete"]("/clientes/".concat(client.id)).then(function (response) {
+              _this2.getData();
+
+              _this2.$snotify.success("Cliente Eliminado", "Exitosamente..!");
+            })["catch"](function (error) {
+              if (error.response.status === 422) {
+                me.errors = error.response.data.errors;
+                me.arrayError = me.errors;
+                console.log(me.errors);
+              }
+
+              me.$snotify.error("Se presento un error vuelva a intentarlo.", "Error");
+            });
+          },
+          bold: true
+        }, {
+          text: "No",
+          action: function action(toast) {
+            _this2.$snotify.remove(toast.id);
+          },
+          bold: true
+        }]
       });
     },
     clearErrors: function clearErrors(error) {
@@ -2193,11 +2243,12 @@ __webpack_require__.r(__webpack_exports__);
         case "client":
           switch (action) {
             case "insert":
-              var me = this;
+              var _me = this;
+
               axios.get('/clientes/create').then(function (response) {
                 // handle success
-                me.code = response.data.code;
-                console.log(me.code);
+                _me.code = response.data.code;
+                console.log(_me.code);
               })["catch"](function (error) {
                 // handle error
                 console.log(error);
@@ -2248,7 +2299,7 @@ __webpack_require__.r(__webpack_exports__);
     }
   },
   mounted: function mounted() {
-    this.getClients();
+    this.getData();
     console.log('Component mounted.');
   }
 });
@@ -33949,7 +34000,7 @@ var render = function() {
         _c("div", { staticClass: "card" }, [
           _c("div", { staticClass: "card-header" }, [
             _c("i", { staticClass: "fa fa-align-justify" }),
-            _vm._v(" Clientes\n                "),
+            _vm._v(" Clientes\n                    "),
             _c(
               "button",
               {
@@ -33963,7 +34014,7 @@ var render = function() {
               },
               [
                 _c("i", { staticClass: "icon-plus" }),
-                _vm._v(" Nuevo\n                ")
+                _vm._v(" Nuevo\n                    ")
               ]
             )
           ]),
@@ -34047,7 +34098,9 @@ var render = function() {
                 [
                   _c(
                     "table",
-                    { staticClass: "table table-bordered table-striped" },
+                    {
+                      staticClass: "table table-bordered table-striped table-sm"
+                    },
                     [
                       _vm._m(2),
                       _vm._v(" "),
@@ -34058,10 +34111,10 @@ var render = function() {
                             return _c("tr", { key: client.id }, [
                               _c("td", [
                                 _c(
-                                  "button",
+                                  "a",
                                   {
-                                    staticClass: "col-3 btn btn-warning btn-sm",
-                                    attrs: { type: "button" },
+                                    staticClass: "btn btn-link text-success",
+                                    attrs: { href: "#", title: "Editar" },
                                     on: {
                                       click: function($event) {
                                         return _vm.openModal(
@@ -34072,14 +34125,14 @@ var render = function() {
                                       }
                                     }
                                   },
-                                  [_c("i", { staticClass: "icon-pencil" })]
+                                  [_vm._m(3, true)]
                                 ),
-                                _vm._v("  \n                                "),
+                                _vm._v(" "),
                                 _c(
-                                  "button",
+                                  "a",
                                   {
-                                    staticClass: "col-3 btn btn-info btn-sm",
-                                    attrs: { type: "button" },
+                                    staticClass: "btn btn-link text-info",
+                                    attrs: { href: "#", title: "Ver" },
                                     on: {
                                       click: function($event) {
                                         return _vm.openModal(
@@ -34090,10 +34143,22 @@ var render = function() {
                                       }
                                     }
                                   },
-                                  [_c("i", { staticClass: "icon-eye" })]
+                                  [_vm._m(4, true)]
                                 ),
-                                _vm._v("  \n                                "),
-                                _vm._m(3, true)
+                                _vm._v(" "),
+                                _c(
+                                  "a",
+                                  {
+                                    staticClass: "btn btn-link text-danger",
+                                    attrs: { href: "#", title: "Eliminar" },
+                                    on: {
+                                      click: function($event) {
+                                        return _vm.destroy(client)
+                                      }
+                                    }
+                                  },
+                                  [_vm._m(5, true)]
+                                )
                               ]),
                               _vm._v(" "),
                               _c("td", {
@@ -34124,7 +34189,25 @@ var render = function() {
                                 domProps: {
                                   textContent: _vm._s(client.birth_date)
                                 }
-                              })
+                              }),
+                              _vm._v(" "),
+                              _c("td", [
+                                !client.deleted_at
+                                  ? _c("div", [
+                                      _c(
+                                        "span",
+                                        { staticClass: "badge badge-success" },
+                                        [_vm._v("Activo")]
+                                      )
+                                    ])
+                                  : _c("div", [
+                                      _c(
+                                        "span",
+                                        { staticClass: "badge badge-danger" },
+                                        [_vm._v("Desactivado")]
+                                      )
+                                    ])
+                              ])
                             ])
                           }),
                           _vm._v(" "),
@@ -34144,7 +34227,7 @@ var render = function() {
                             [
                               _c("td", { attrs: { colspan: "7" } }, [
                                 _vm._v(
-                                  "\n                                   Lo sentimos no se encuentra la información de este Cliente :(  ! \n                                "
+                                  "\n                                       Lo sentimos no se encuentra la información de este Cliente :(  ! \n                                    "
                                 )
                               ])
                             ]
@@ -34162,7 +34245,7 @@ var render = function() {
                     attrs: { pagination: _vm.pagination, offset: _vm.offset },
                     on: {
                       paginate: function($event) {
-                        _vm.query === "" ? _vm.getClients() : _vm.searchData()
+                        _vm.query === "" ? _vm.getData() : _vm.searchData()
                       }
                     }
                   })
@@ -34213,7 +34296,9 @@ var render = function() {
                       _c("i", { staticClass: "fas fa-user-tag" }, [
                         _vm._v(" ")
                       ]),
-                      _vm._v(_vm._s(_vm.titleModal) + "\n                    ")
+                      _vm._v(
+                        _vm._s(_vm.titleModal) + "\n                        "
+                      )
                     ]
                   ),
                   _vm._v(" "),
@@ -34234,7 +34319,9 @@ var render = function() {
                       _c("i", { staticClass: "fas fa-user-edit" }, [
                         _vm._v(" ")
                       ]),
-                      _vm._v(_vm._s(_vm.titleModal) + "\n                    ")
+                      _vm._v(
+                        _vm._s(_vm.titleModal) + "\n                        "
+                      )
                     ]
                   ),
                   _vm._v(" "),
@@ -34263,14 +34350,14 @@ var render = function() {
                       _c("div", { staticClass: "col-md-6" }, [
                         _vm.personData == 1
                           ? _c("div", { staticClass: "float-left" }, [
-                              _vm._m(4),
+                              _vm._m(6),
                               _vm._v(" Datos Personales")
                             ])
                           : _vm._e(),
                         _vm._v(" "),
                         _vm.personData == 0
                           ? _c("div", { staticClass: "float-left" }, [
-                              _vm._m(5),
+                              _vm._m(7),
                               _vm._v(" Dirección")
                             ])
                           : _vm._e()
@@ -34899,7 +34986,7 @@ var render = function() {
                           attrs: { type: "button" },
                           on: {
                             click: function($event) {
-                              return _vm.newClient()
+                              return _vm.store()
                             }
                           }
                         },
@@ -34915,7 +35002,7 @@ var render = function() {
                           attrs: { type: "button" },
                           on: {
                             click: function($event) {
-                              return _vm.updateClient()
+                              return _vm.update()
                             }
                           }
                         },
@@ -34929,7 +35016,7 @@ var render = function() {
         ]
       ),
       _vm._v(" "),
-      _vm._m(6),
+      _vm._m(8),
       _vm._v(" "),
       _c(
         "transition",
@@ -34973,7 +35060,7 @@ var staticRenderFns = [
         { staticClass: "btn btn-primary", attrs: { type: "button" } },
         [
           _c("i", { staticClass: "fa fa-search" }),
-          _vm._v(" Buscar\n                          ")
+          _vm._v(" Buscar\n                              ")
         ]
       )
     ])
@@ -34984,7 +35071,7 @@ var staticRenderFns = [
     var _c = _vm._self._c || _h
     return _c("thead", [
       _c("tr", [
-        _c("th", { attrs: { width: "" } }, [_vm._v("Opciones")]),
+        _c("th", { attrs: { width: "150" } }, [_vm._v("Opciones")]),
         _vm._v(" "),
         _c("th", [_vm._v("Código")]),
         _vm._v(" "),
@@ -34996,7 +35083,9 @@ var staticRenderFns = [
         _vm._v(" "),
         _c("th", [_vm._v("Email")]),
         _vm._v(" "),
-        _c("th", { attrs: { width: "100" } }, [_vm._v("Fecha Nac")])
+        _c("th", { attrs: { width: "100" } }, [_vm._v("Fecha Nac")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Estado")])
       ])
     ])
   },
@@ -35004,11 +35093,19 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c(
-      "button",
-      { staticClass: "col-3 btn btn-danger btn-sm", attrs: { type: "button" } },
-      [_c("i", { staticClass: "icon-trash" })]
-    )
+    return _c("strong", [_c("i", { staticClass: "fas fa-pencil-alt" })])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("strong", [_c("i", { staticClass: "fas fa-eye" })])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("strong", [_c("i", { staticClass: "fas fa-trash-alt" })])
   },
   function() {
     var _vm = this

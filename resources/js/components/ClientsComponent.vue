@@ -35,30 +35,37 @@
                     </div>
                    
                     <div id="div1" class="table-responsive-sm">
-                        <table class="table table-bordered table-striped">
+                        <table class="table table-bordered table-striped table-sm">
                             <thead>
                                 <tr>
-                                    <th width="">Opciones</th>
+                                    <th width="150">Opciones</th>
                                     <th>Código</th>
                                     <th width="300">Nombre</th>
                                     <th width="300">Razópn Social</th>
                                     <th>Nickname</th>
                                     <th>Email</th>
                                     <th width="100">Fecha Nac</th>
+                                    <th>Estado</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <tr v-for="client in arrayClients" :key="client.id">
                                     <td>
+                                    <a @click="openModal('client', 'update', client)" href="#" class="btn btn-link text-success" title="Editar"><strong><i class="fas fa-pencil-alt"></i></strong></a>
+
+                                    <a @click="openModal('client', 'show', client)" href="#" class="btn btn-link text-info" title="Ver"><strong><i class="fas fa-eye"></i></strong></a>
+
+                                    <a @click="destroy(client)" href="#" class="btn btn-link text-danger" title="Eliminar"><strong><i class="fas fa-trash-alt"></i></strong></a>
+<!-- 
                                     <button @click="openModal('client', 'update', client)" type="button" class="col-3 btn btn-warning btn-sm">
                                       <i class="icon-pencil"></i>
-                                    </button> &nbsp;
-                                    <button @click="openModal('client', 'show', client)" type="button" class="col-3 btn btn-info btn-sm">
+                                    </button> &nbsp; -->
+                                    <!--<button @click="openModal('client', 'show', client)" type="button" class="col-3 btn btn-info btn-sm">
                                       <i class="icon-eye"></i>
                                     </button> &nbsp;
-                                    <button type="button" class="col-3 btn btn-danger btn-sm">
+                                    <button @click="destroy(client)" type="button" class="col-3 btn btn-danger btn-sm">
                                       <i class="icon-trash"></i>
-                                    </button>
+                                    </button> -->
                                     </td>
                                     <td v-text="client.code"></td>
                                     <td v-text="client.name"></td>
@@ -66,6 +73,14 @@
                                     <td v-text="client.nickname"></td>
                                     <td v-text="client.email"></td>
                                     <td v-text="client.birth_date"></td>
+                                    <td>
+                                        <div v-if="!client.deleted_at">
+                                            <span class="badge badge-success">Activo</span>
+                                        </div>
+                                        <div v-else>
+                                            <span class="badge badge-danger">Desactivado</span>
+                                        </div>
+                                    </td>
                                 </tr>
                                 <tr class="table-danger" v-show="!arrayClients.length">
                                     <td colspan="7">
@@ -80,7 +95,7 @@
                         v-if="pagination.last_page > 1"
                         :pagination="pagination"
                         :offset="offset"
-                        @paginate="query === '' ? getClients() : searchData()"
+                        @paginate="query === '' ? getData() : searchData()"
                     ></pagination-component>
                     <!-- End PaginationComponent -->
                 </div>
@@ -196,8 +211,8 @@
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" @click="closeModal()">Cerrar</button>
 
-                        <button type="button" class="btn btn-primary" v-if="typeAction==1" @click="newClient()">Guardar</button>
-                        <button type="button" class="btn btn-primary" v-if="typeAction==2" @click="updateClient()">Actualizar</button>
+                        <button type="button" class="btn btn-primary" v-if="typeAction==1" @click="store()">Guardar</button>
+                        <button type="button" class="btn btn-primary" v-if="typeAction==2" @click="update()">Actualizar</button>
                     </div>
                 </div>
                 <!-- /.modal-content -->
@@ -271,14 +286,14 @@
         watch: {
                 query: function(newQ, old) {
                   if (newQ === "") {
-                    this.getClients();
+                    this.getData();
                   } else {
                     this.searchData();
                 }
             }
         },
         methods: {
-            getClients() {
+            getData() {
                 let me = this;
                 axios.get('/clientes?page=' + this.pagination.current_page).then(function (response) {
                     // handle success
@@ -304,7 +319,7 @@
                         console.log(error);
                     })
             },
-            newClient() {
+            store() {
                 this.errors = {}
                 let me = this;
 
@@ -322,7 +337,7 @@
                 }).then(function(response){
                     me.$snotify.success("Cliente Registrado", "Exitosamente..!");
                     me.closeModal();
-                    me.getClients();
+                    me.getData();
                 }).catch(function(error) {
                     if(error.response.status === 422) {
                         me.errors = error.response.data.errors
@@ -336,7 +351,7 @@
                 });
 
             },
-            updateClient() {
+            update() {
                 this.errors = {}
                 let me = this;
 
@@ -355,9 +370,8 @@
                 }).then(function(response){
                     me.$snotify.success("Cliente Actualizado", "Exitosamente..!");
                     me.closeModal();
-                    me.getClients();
+                    me.getData();
                 }).catch(function(error) {
-                      console.log(error)
                     if(error.response.status === 422) {
                         me.errors = error.response.data.errors
                         me.arrayError = me.errors
@@ -369,6 +383,49 @@
                     );
                 });
 
+            },
+            destroy(client) {
+              this.$snotify.clear();
+              this.$snotify.confirm(
+                "Este registro solo podrá se activado por el Administrador!",
+                "Eliminar Registro.?",
+                {
+                  showProgressBar: false,
+                  closeOnClick: false,
+                  pauseOnHover: true,
+                  buttons: [
+                    {
+                      text: "Si",
+                      action: toast => {
+                        this.$snotify.remove(toast.id);
+                        axios.delete(`/clientes/${client.id}`).then(response => {
+                            this.getData();
+                            this.$snotify.success(
+                              "Cliente Eliminado","Exitosamente..!");
+                          }).catch(function(error) {
+                            if(error.response.status === 422) {
+                                me.errors = error.response.data.errors
+                                me.arrayError = me.errors
+                                console.log(me.errors)
+                            }
+                            me.$snotify.error(
+                              "Se presento un error vuelva a intentarlo.",
+                              "Error"
+                            );
+                        });
+                      },
+                      bold: true
+                    },
+                    {
+                      text: "No",
+                      action: toast => {
+                        this.$snotify.remove(toast.id);
+                      },
+                      bold: true
+                    }
+                  ]
+                }
+              );
             },
             clearErrors(error) {
 
@@ -487,7 +544,7 @@
             }        
         },
         mounted() {
-            this.getClients()
+            this.getData()
             console.log('Component mounted.')
         }
     }

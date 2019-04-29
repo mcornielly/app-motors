@@ -4,9 +4,12 @@ namespace App\Http\Controllers;
 
 use App\Client;
 use Illuminate\Http\Request;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class ClientController extends Controller
 {
+
+    use SoftDeletes;
     /**
      * Display a listing of the resource.
      *
@@ -130,7 +133,7 @@ class ClientController extends Controller
             'name'  => 'required|string',
             'razon_social'  => 'required|string',
             'nickname'  => 'required|string',
-            'email'  => 'required|string|email|unique:clients,email,'.$id, 
+            'email'  => 'required|string|email|unique:clients,email,'.$client->id, 
             'birth_date' => 'required|date_format:Y-m-d',
             'reference'     => 'nullable|max:100',
             'cp'  => 'required',
@@ -157,8 +160,10 @@ class ClientController extends Controller
      * @param  \App\Client  $client
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Client $client)
+    public function destroy(Request $request, $id)
     {
-        //
+        
+        $client = Client::findOrFail($id);
+        $client->delete();
     }
 }
