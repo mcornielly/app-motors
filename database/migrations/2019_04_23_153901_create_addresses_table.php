@@ -20,8 +20,8 @@ class CreateAddressesTable extends Migration
             $table->string('locality');
             $table->string('province');
             $table->string('phone_number');
-            $table->string('nextel_number');
-            $table->string('cell_number');
+            $table->string('nextel_number')->nullable();
+            $table->string('cell_number')->nullable();
             $table->softDeletes();
             $table->timestamps();
 

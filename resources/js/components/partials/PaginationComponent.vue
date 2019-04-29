@@ -49,7 +49,7 @@ export default {
     },
     methods: {
         nextPage(page) {
-            console.log(page)
+            // console.log(page)
             // let me = this;
             if (page > this.pagination.last_page) {
                 page = this.pagination.last_page;

@@ -61,23 +61,21 @@
 					<table class="table table-sm">
 						<tr>
 							<th>Dirección:</th>
-							<td colspan="5">
-								is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially
-							</td>
+							<td colspan="5" v-text="client.address"></td>
 						</tr>
 						<tr>
 							<th>Localidad:</th>
-							<td colspan="2">Caracas</td>
+							<td colspan="2" v-text="client.locality"></td>
 							<th class="text-right">Provincia:</th>
-							<td colspan="2">Miranda</td>
+							<td colspan="2"v-text="client.province"></td>
 						</tr>
 						<tr>
 							<th>Teléfono:</th>
-							<td>0212-999/55/30</td>
+							<td v-text="client.phone_number"></td>
 							<th>Celular:</th>
-							<td>0414-230/00/00</td>
+							<td v-text="client.cell_number"></td>
 							<th>Nextel:</th>
-							<td>0412-230/00/00</td>
+							<td v-text="client.nextel_number"></td>
 						</tr>
 					</table>	
                   </div>

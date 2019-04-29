@@ -2015,6 +2015,53 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
@@ -2029,6 +2076,12 @@ __webpack_require__.r(__webpack_exports__);
       cp: '',
       cuit: '',
       tax: '',
+      address: '',
+      locality: '',
+      province: '',
+      phone_number: '',
+      nextel_number: '',
+      cell_number: '',
       arrayClients: [],
       arrayClient: [],
       modal: 0,
@@ -2095,7 +2148,13 @@ __webpack_require__.r(__webpack_exports__);
         'reference': this.reference,
         'cp': this.cp,
         'cuit': this.cuit,
-        'tax': this.tax
+        'tax': this.tax,
+        'address': this.address,
+        'locality': this.locality,
+        'province': this.province,
+        'phone_number': this.phone_number,
+        'nextel_number': this.nextel_number,
+        'cell_number': this.cell_number
       }).then(function (response) {
         me.$snotify.success("Cliente Registrado", "Exitosamente..!");
         me.closeModal();
@@ -2124,7 +2183,13 @@ __webpack_require__.r(__webpack_exports__);
         'reference': this.reference,
         'cp': this.cp,
         'cuit': this.cuit,
-        'tax': this.tax
+        'tax': this.tax,
+        'address': this.address,
+        'locality': this.locality,
+        'province': this.province,
+        'phone_number': this.phone_number,
+        'nextel_number': this.nextel_number,
+        'cell_number': this.cell_number
       }).then(function (response) {
         me.$snotify.success("Cliente Actualizado", "Exitosamente..!");
         me.closeModal();
@@ -2234,6 +2299,12 @@ __webpack_require__.r(__webpack_exports__);
       this.cp = '';
       this.cuit = '';
       this.tax = '';
+      this.address = '';
+      this.locality = '';
+      this.province = '';
+      this.phone_number = '';
+      this.nextel_number = '';
+      this.cell_number = '';
     },
     openModal: function openModal(model, action) {
       var data = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : [];
@@ -2266,6 +2337,12 @@ __webpack_require__.r(__webpack_exports__);
               this.cp = '';
               this.cuit = '';
               this.tax = '';
+              this.address = '';
+              this.locality = '';
+              this.province = '';
+              this.phone_number = '';
+              this.nextel_number = '';
+              this.cell_number = '';
               break;
 
             case "update":
@@ -2285,6 +2362,12 @@ __webpack_require__.r(__webpack_exports__);
               this.cp = data['cp'];
               this.cuit = data['cuit'];
               this.tax = data['tax'];
+              this.address = data['address'];
+              this.locality = data['locality'];
+              this.province = data['province'];
+              this.phone_number = data['phone_number'];
+              this.nextel_number = data['nextel_number'];
+              this.cell_number = data['cell_number'];
               break;
 
             case "show":
@@ -2368,8 +2451,8 @@ __webpack_require__.r(__webpack_exports__);
   },
   methods: {
     nextPage: function nextPage(page) {
-      console.log(page); // let me = this;
-
+      // console.log(page)
+      // let me = this;
       if (page > this.pagination.last_page) {
         page = this.pagination.last_page;
       }
@@ -2392,8 +2475,6 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-//
-//
 //
 //
 //
@@ -34225,7 +34306,7 @@ var render = function() {
                               staticClass: "table-danger"
                             },
                             [
-                              _c("td", { attrs: { colspan: "7" } }, [
+                              _c("td", { attrs: { colspan: "8" } }, [
                                 _vm._v(
                                   "\n                                       Lo sentimos no se encuentra la información de este Cliente :(  ! \n                                    "
                                 )
@@ -34358,7 +34439,12 @@ var render = function() {
                         _vm.personData == 0
                           ? _c("div", { staticClass: "float-left" }, [
                               _vm._m(7),
-                              _vm._v(" Dirección")
+                              _vm._v(
+                                " Dirección del Cliente: \n                                   "
+                              ),
+                              _c("strong", {
+                                domProps: { textContent: _vm._s(_vm.name) }
+                              })
                             ])
                           : _vm._e()
                       ]),
@@ -34825,11 +34911,7 @@ var render = function() {
                                       "is-invalid": _vm.errors.cp,
                                       "is-valid": _vm.cp
                                     },
-                                    attrs: {
-                                      id: "cvv",
-                                      type: "text",
-                                      placeholder: "CP"
-                                    },
+                                    attrs: { type: "text", placeholder: "CP" },
                                     domProps: { value: _vm.cp },
                                     on: {
                                       keyup: function($event) {
@@ -34958,7 +35040,343 @@ var render = function() {
                               )
                             ])
                           ])
-                        : _c("div", [_c("h2", [_vm._v("Dirección")])])
+                        : _c("div", [
+                            _c("div", { staticClass: "form-group row" }, [
+                              _c(
+                                "label",
+                                {
+                                  staticClass: "col-md-3 col-form-label",
+                                  attrs: { for: "textarea-input" }
+                                },
+                                [_vm._v("Dirección")]
+                              ),
+                              _vm._v(" "),
+                              _c("div", { staticClass: "col-md-9" }, [
+                                _c("textarea", {
+                                  directives: [
+                                    {
+                                      name: "model",
+                                      rawName: "v-model",
+                                      value: _vm.address,
+                                      expression: "address"
+                                    }
+                                  ],
+                                  staticClass: "form-control",
+                                  attrs: {
+                                    id: "textarea-input",
+                                    name: "textarea-input",
+                                    rows: "3",
+                                    placeholder: "Dirección.."
+                                  },
+                                  domProps: { value: _vm.address },
+                                  on: {
+                                    input: function($event) {
+                                      if ($event.target.composing) {
+                                        return
+                                      }
+                                      _vm.address = $event.target.value
+                                    }
+                                  }
+                                }),
+                                _vm._v(" "),
+                                _vm.errors.address
+                                  ? _c(
+                                      "small",
+                                      {
+                                        staticClass: "error-control text-danger"
+                                      },
+                                      [_vm._v(_vm._s(_vm.errors.address[0]))]
+                                    )
+                                  : _vm._e(),
+                                _vm._v(" "),
+                                _c("span", { staticClass: "help-block" }, [
+                                  _vm._v("(*) Ingrese Dirección")
+                                ])
+                              ])
+                            ]),
+                            _vm._v(" "),
+                            _c("div", { staticClass: "form-group row" }, [
+                              _c(
+                                "label",
+                                { staticClass: "col-md-3 form-control-label" },
+                                [_vm._v("Localidad")]
+                              ),
+                              _vm._v(" "),
+                              _c("div", { staticClass: "col-md-9" }, [
+                                _c("input", {
+                                  directives: [
+                                    {
+                                      name: "model",
+                                      rawName: "v-model",
+                                      value: _vm.locality,
+                                      expression: "locality"
+                                    }
+                                  ],
+                                  staticClass: "form-control",
+                                  class: {
+                                    "is-invalid": _vm.errors.locality,
+                                    "is-valid": _vm.locality
+                                  },
+                                  attrs: {
+                                    type: "text",
+                                    placeholder: "Localidad"
+                                  },
+                                  domProps: { value: _vm.locality },
+                                  on: {
+                                    keyup: function($event) {
+                                      return _vm.clearErrors("locality")
+                                    },
+                                    input: function($event) {
+                                      if ($event.target.composing) {
+                                        return
+                                      }
+                                      _vm.locality = $event.target.value
+                                    }
+                                  }
+                                }),
+                                _vm._v(" "),
+                                _vm.errors.email
+                                  ? _c(
+                                      "small",
+                                      {
+                                        staticClass: "error-control text-danger"
+                                      },
+                                      [_vm._v(_vm._s(_vm.errors.locality[0]))]
+                                    )
+                                  : _vm._e(),
+                                _vm._v(" "),
+                                _c("span", { staticClass: "help-block" }, [
+                                  _vm._v("(*) Ingrese Localidad")
+                                ])
+                              ])
+                            ]),
+                            _vm._v(" "),
+                            _c("div", { staticClass: "form-group row" }, [
+                              _c(
+                                "label",
+                                { staticClass: "col-md-3 form-control-label" },
+                                [_vm._v("Provincia")]
+                              ),
+                              _vm._v(" "),
+                              _c("div", { staticClass: "col-md-9" }, [
+                                _c("input", {
+                                  directives: [
+                                    {
+                                      name: "model",
+                                      rawName: "v-model",
+                                      value: _vm.province,
+                                      expression: "province"
+                                    }
+                                  ],
+                                  staticClass: "form-control",
+                                  class: {
+                                    "is-invalid": _vm.errors.province,
+                                    "is-valid": _vm.province
+                                  },
+                                  attrs: {
+                                    type: "text",
+                                    id: "nickname",
+                                    name: "nickname",
+                                    placeholder: "Provincia"
+                                  },
+                                  domProps: { value: _vm.province },
+                                  on: {
+                                    keyup: function($event) {
+                                      return _vm.clearErrors("province")
+                                    },
+                                    input: function($event) {
+                                      if ($event.target.composing) {
+                                        return
+                                      }
+                                      _vm.province = $event.target.value
+                                    }
+                                  }
+                                }),
+                                _vm._v(" "),
+                                _vm.errors.province
+                                  ? _c(
+                                      "small",
+                                      {
+                                        staticClass: "error-control text-danger"
+                                      },
+                                      [_vm._v(_vm._s(_vm.errors.province[0]))]
+                                    )
+                                  : _vm._e(),
+                                _vm._v(" "),
+                                _c("span", { staticClass: "help-block" }, [
+                                  _vm._v("(*) Ingrese Provincia")
+                                ])
+                              ])
+                            ]),
+                            _vm._v(" "),
+                            _c("div", { staticClass: "form-group row" }, [
+                              _c(
+                                "label",
+                                { staticClass: "col-md-3 form-control-label" },
+                                [_vm._v("Teléfono")]
+                              ),
+                              _vm._v(" "),
+                              _c("div", { staticClass: "col-md-9" }, [
+                                _c("input", {
+                                  directives: [
+                                    {
+                                      name: "model",
+                                      rawName: "v-model",
+                                      value: _vm.phone_number,
+                                      expression: "phone_number"
+                                    }
+                                  ],
+                                  staticClass: "form-control",
+                                  class: {
+                                    "is-invalid": _vm.errors.phone_number,
+                                    "is-valid": _vm.phone_number
+                                  },
+                                  attrs: {
+                                    type: "text",
+                                    placeholder: "Teléfono"
+                                  },
+                                  domProps: { value: _vm.phone_number },
+                                  on: {
+                                    keyup: function($event) {
+                                      return _vm.clearErrors("phone_number")
+                                    },
+                                    input: function($event) {
+                                      if ($event.target.composing) {
+                                        return
+                                      }
+                                      _vm.phone_number = $event.target.value
+                                    }
+                                  }
+                                }),
+                                _vm._v(" "),
+                                _vm.errors.phone_number
+                                  ? _c(
+                                      "small",
+                                      {
+                                        staticClass: "error-control text-danger"
+                                      },
+                                      [
+                                        _vm._v(
+                                          _vm._s(_vm.errors.phone_number[0])
+                                        )
+                                      ]
+                                    )
+                                  : _vm._e()
+                              ])
+                            ]),
+                            _vm._v(" "),
+                            _c("div", { staticClass: "form-group row" }, [
+                              _c(
+                                "label",
+                                { staticClass: "col-md-3 form-control-label" },
+                                [_vm._v("Nextel")]
+                              ),
+                              _vm._v(" "),
+                              _c("div", { staticClass: "col-md-9" }, [
+                                _c("input", {
+                                  directives: [
+                                    {
+                                      name: "model",
+                                      rawName: "v-model",
+                                      value: _vm.nextel_number,
+                                      expression: "nextel_number"
+                                    }
+                                  ],
+                                  staticClass: "form-control",
+                                  class: {
+                                    "is-invalid": _vm.errors.nextel_number,
+                                    "is-valid": _vm.nextel_number
+                                  },
+                                  attrs: {
+                                    type: "text",
+                                    placeholder: "Nextel"
+                                  },
+                                  domProps: { value: _vm.nextel_number },
+                                  on: {
+                                    keyup: function($event) {
+                                      return _vm.clearErrors("nextel_number")
+                                    },
+                                    input: function($event) {
+                                      if ($event.target.composing) {
+                                        return
+                                      }
+                                      _vm.nextel_number = $event.target.value
+                                    }
+                                  }
+                                }),
+                                _vm._v(" "),
+                                _vm.errors.nextel_number
+                                  ? _c(
+                                      "small",
+                                      {
+                                        staticClass: "error-control text-danger"
+                                      },
+                                      [
+                                        _vm._v(
+                                          _vm._s(_vm.errors.nextel_number[0])
+                                        )
+                                      ]
+                                    )
+                                  : _vm._e()
+                              ])
+                            ]),
+                            _vm._v(" "),
+                            _c("div", { staticClass: "form-group row" }, [
+                              _c(
+                                "label",
+                                { staticClass: "col-md-3 form-control-label" },
+                                [_vm._v("Celular")]
+                              ),
+                              _vm._v(" "),
+                              _c("div", { staticClass: "col-sm-9" }, [
+                                _c("input", {
+                                  directives: [
+                                    {
+                                      name: "model",
+                                      rawName: "v-model",
+                                      value: _vm.cell_number,
+                                      expression: "cell_number"
+                                    }
+                                  ],
+                                  staticClass: "form-control",
+                                  class: {
+                                    "is-invalid": _vm.errors.cell_number,
+                                    "is-valid": _vm.cell_number
+                                  },
+                                  attrs: {
+                                    type: "text",
+                                    placeholder: "Celular"
+                                  },
+                                  domProps: { value: _vm.cell_number },
+                                  on: {
+                                    keyup: function($event) {
+                                      return _vm.clearErrors("cell_number")
+                                    },
+                                    input: function($event) {
+                                      if ($event.target.composing) {
+                                        return
+                                      }
+                                      _vm.cell_number = $event.target.value
+                                    }
+                                  }
+                                }),
+                                _vm._v(" "),
+                                _vm.errors.cell_number
+                                  ? _c(
+                                      "small",
+                                      {
+                                        staticClass: "error-control text-danger"
+                                      },
+                                      [
+                                        _vm._v(
+                                          _vm._s(_vm.errors.cell_number[0])
+                                        )
+                                      ]
+                                    )
+                                  : _vm._e()
+                              ])
+                            ])
+                          ])
                     ]
                   )
                 ]),
@@ -35438,7 +35856,76 @@ var render = function() {
                   ])
                 ]),
                 _vm._v(" "),
-                _vm._m(2)
+                _c("div", { staticClass: "row" }, [
+                  _c("div", { staticClass: "col-md-12" }, [
+                    _c("div", { staticClass: "card card-accent-success" }, [
+                      _vm._m(2),
+                      _vm._v(" "),
+                      _c("div", { staticClass: "card-body" }, [
+                        _c("table", { staticClass: "table table-sm" }, [
+                          _c("tr", [
+                            _c("th", [_vm._v("Dirección:")]),
+                            _vm._v(" "),
+                            _c("td", {
+                              attrs: { colspan: "5" },
+                              domProps: {
+                                textContent: _vm._s(_vm.client.address)
+                              }
+                            })
+                          ]),
+                          _vm._v(" "),
+                          _c("tr", [
+                            _c("th", [_vm._v("Localidad:")]),
+                            _vm._v(" "),
+                            _c("td", {
+                              attrs: { colspan: "2" },
+                              domProps: {
+                                textContent: _vm._s(_vm.client.locality)
+                              }
+                            }),
+                            _vm._v(" "),
+                            _c("th", { staticClass: "text-right" }, [
+                              _vm._v("Provincia:")
+                            ]),
+                            _vm._v(" "),
+                            _c("td", {
+                              attrs: { colspan: "2" },
+                              domProps: {
+                                textContent: _vm._s(_vm.client.province)
+                              }
+                            })
+                          ]),
+                          _vm._v(" "),
+                          _c("tr", [
+                            _c("th", [_vm._v("Teléfono:")]),
+                            _vm._v(" "),
+                            _c("td", {
+                              domProps: {
+                                textContent: _vm._s(_vm.client.phone_number)
+                              }
+                            }),
+                            _vm._v(" "),
+                            _c("th", [_vm._v("Celular:")]),
+                            _vm._v(" "),
+                            _c("td", {
+                              domProps: {
+                                textContent: _vm._s(_vm.client.cell_number)
+                              }
+                            }),
+                            _vm._v(" "),
+                            _c("th", [_vm._v("Nextel:")]),
+                            _vm._v(" "),
+                            _c("td", {
+                              domProps: {
+                                textContent: _vm._s(_vm.client.nextel_number)
+                              }
+                            })
+                          ])
+                        ])
+                      ])
+                    ])
+                  ])
+                ])
               ]),
               _vm._v(" "),
               _c("div", { staticClass: "modal-footer" }, [
@@ -35484,54 +35971,10 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "row" }, [
-      _c("div", { staticClass: "col-md-12" }, [
-        _c("div", { staticClass: "card card-accent-success" }, [
-          _c("div", { staticClass: "card-header" }, [
-            _c("h6", { staticClass: "float-left text-gray" }, [
-              _c("i", { staticClass: "fas fa-map-marked-alt" }, [_vm._v(" ")]),
-              _vm._v(" Dirección")
-            ])
-          ]),
-          _vm._v(" "),
-          _c("div", { staticClass: "card-body" }, [
-            _c("table", { staticClass: "table table-sm" }, [
-              _c("tr", [
-                _c("th", [_vm._v("Dirección:")]),
-                _vm._v(" "),
-                _c("td", { attrs: { colspan: "5" } }, [
-                  _vm._v(
-                    "\n\t\t\t\t\t\t\t\tis simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially\n\t\t\t\t\t\t\t"
-                  )
-                ])
-              ]),
-              _vm._v(" "),
-              _c("tr", [
-                _c("th", [_vm._v("Localidad:")]),
-                _vm._v(" "),
-                _c("td", { attrs: { colspan: "2" } }, [_vm._v("Caracas")]),
-                _vm._v(" "),
-                _c("th", { staticClass: "text-right" }, [_vm._v("Provincia:")]),
-                _vm._v(" "),
-                _c("td", { attrs: { colspan: "2" } }, [_vm._v("Miranda")])
-              ]),
-              _vm._v(" "),
-              _c("tr", [
-                _c("th", [_vm._v("Teléfono:")]),
-                _vm._v(" "),
-                _c("td", [_vm._v("0212-999/55/30")]),
-                _vm._v(" "),
-                _c("th", [_vm._v("Celular:")]),
-                _vm._v(" "),
-                _c("td", [_vm._v("0414-230/00/00")]),
-                _vm._v(" "),
-                _c("th", [_vm._v("Nextel:")]),
-                _vm._v(" "),
-                _c("td", [_vm._v("0412-230/00/00")])
-              ])
-            ])
-          ])
-        ])
+    return _c("div", { staticClass: "card-header" }, [
+      _c("h6", { staticClass: "float-left text-gray" }, [
+        _c("i", { staticClass: "fas fa-map-marked-alt" }, [_vm._v(" ")]),
+        _vm._v(" Dirección")
       ])
     ])
   }
@@ -49470,8 +49913,8 @@ __webpack_require__.r(__webpack_exports__);
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! c:\xampp\htdocs\app-motors\resources\js\app.js */"./resources/js/app.js");
-module.exports = __webpack_require__(/*! c:\xampp\htdocs\app-motors\resources\sass\app.scss */"./resources/sass/app.scss");
+__webpack_require__(/*! C:\xampp\htdocs\app-motors\resources\js\app.js */"./resources/js/app.js");
+module.exports = __webpack_require__(/*! C:\xampp\htdocs\app-motors\resources\sass\app.scss */"./resources/sass/app.scss");
 
 
 /***/ })

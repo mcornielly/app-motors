@@ -83,7 +83,7 @@
                                     </td>
                                 </tr>
                                 <tr class="table-danger" v-show="!arrayClients.length">
-                                    <td colspan="7">
+                                    <td colspan="8">
                                        Lo sentimos no se encuentra la información de este Cliente :(  ! 
                                     </td>
                                 </tr>
@@ -122,7 +122,9 @@
                             <div class="row">
                                <div class="col-md-6">
                                     <div v-if="personData==1" class="float-left"><strong ><i class="fas fa-address-card">&nbsp;</i></strong> Datos Personales</div>
-                                   <div v-if="personData==0" class="float-left"><strong ><i class="fas fa-map-marked-alt">&nbsp;</i></strong> Dirección</div>
+                                   <div v-if="personData==0" class="float-left"><strong ><i class="fas fa-map-marked-alt">&nbsp;</i></strong> Dirección del Cliente: 
+                                   <strong v-text="name"></strong>
+                                   </div>
                                </div>
                                 <div class="col-md-6">
                                     <button v-if="personData==0" @click="personData=1" class="btn btn-primary btn-sm float-right">Datos Personales</button>
@@ -189,7 +191,7 @@
                                 <div class="form-group row">
                                     <label class="col-md-3 col-form-label" for="text-input ">CP / CUIT / IMP.</label>
                                     <div class="form-group col-sm-3">
-                                        <input v-on:keyup="clearErrors('cp')" class="form-control" id="cvv" type="text" placeholder="CP" v-model="cp" :class="{ 'is-invalid': errors.cp, 'is-valid': cp }">
+                                        <input v-on:keyup="clearErrors('cp')" class="form-control" type="text" placeholder="CP" v-model="cp" :class="{ 'is-invalid': errors.cp, 'is-valid': cp }">
                                         <small class="error-control text-danger" v-if="errors.cp">{{ errors.cp[0] }}</small>      
                                     </div>
                                     <div class="form-group col-sm-3">
@@ -202,8 +204,53 @@
                                     </div>
                                 </div>
                             </div>
+                            <!-- Model Address -->
                             <div v-else>
-                                <h2>Dirección</h2>
+                                <div class="form-group row">
+                                    <label class="col-md-3 col-form-label" for="textarea-input">Dirección</label>
+                                    <div class="col-md-9">
+                                        <textarea class="form-control" id="textarea-input" name="textarea-input" rows="3" placeholder="Dirección.." v-model="address"></textarea>
+                                        <small class="error-control text-danger" v-if="errors.address">{{ errors.address[0] }}</small>
+                                        <span class="help-block">(*) Ingrese Dirección</span>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label class="col-md-3 form-control-label">Localidad</label>
+                                    <div class="col-md-9">
+                                        <input type="text" v-on:keyup="clearErrors('locality')" class="form-control" placeholder="Localidad" v-model="locality" :class="{ 'is-invalid': errors.locality, 'is-valid': locality }">
+                                        <small class="error-control text-danger" v-if="errors.email">{{ errors.locality[0] }}</small>
+                                        <span class="help-block">(*) Ingrese Localidad</span>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label class="col-md-3 form-control-label">Provincia</label>
+                                    <div class="col-md-9">
+                                        <input type="text" v-on:keyup="clearErrors('province')" id="nickname" name="nickname" class="form-control" placeholder="Provincia" v-model="province" :class="{ 'is-invalid': errors.province, 'is-valid': province }">
+                                        <small class="error-control text-danger" v-if="errors.province">{{ errors.province[0] }}</small>
+                                        <span class="help-block">(*) Ingrese Provincia</span>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label class="col-md-3 form-control-label">Teléfono</label>
+                                    <div class="col-md-9">
+                                        <input v-on:keyup="clearErrors('phone_number')" class="form-control" type="text" placeholder="Teléfono" v-model="phone_number" :class="{ 'is-invalid': errors.phone_number, 'is-valid': phone_number }">
+                                        <small class="error-control text-danger" v-if="errors.phone_number">{{ errors.phone_number[0] }}</small>      
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label class="col-md-3 form-control-label">Nextel</label>
+                                    <div class="col-md-9">
+                                        <input v-on:keyup="clearErrors('nextel_number')" class="form-control" type="text" placeholder="Nextel" v-model="nextel_number" :class="{ 'is-invalid': errors.nextel_number, 'is-valid': nextel_number }">
+                                        <small class="error-control text-danger" v-if="errors.nextel_number">{{ errors.nextel_number[0] }}</small>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label class="col-md-3 form-control-label">Celular</label>
+                                    <div class="col-sm-9">
+                                      <input v-on:keyup="clearErrors('cell_number')" class="form-control" type="text" placeholder="Celular" v-model="cell_number" :class="{ 'is-invalid': errors.cell_number, 'is-valid': cell_number }">
+                                      <small class="error-control text-danger" v-if="errors.cell_number">{{ errors.cell_number[0] }}</small>
+                                    </div>
+                                </div>
                             </div>
                         </form>
                     </div> 
@@ -265,6 +312,12 @@
                 cp: '',
                 cuit: '',
                 tax: '',
+                address: '',
+                locality: '',
+                province: '',
+                phone_number: '',
+                nextel_number: '',
+                cell_number: '',
                 arrayClients: [],
                 arrayClient: [],
                 modal: 0,
@@ -333,7 +386,13 @@
                   'reference': this.reference,
                   'cp': this.cp,
                   'cuit': this.cuit,
-                  'tax': this.tax
+                  'tax': this.tax,
+                  'address': this.address,
+                  'locality': this.locality,
+                  'province': this.province,
+                  'phone_number': this.phone_number,
+                  'nextel_number': this.nextel_number,
+                  'cell_number': this.cell_number
                 }).then(function(response){
                     me.$snotify.success("Cliente Registrado", "Exitosamente..!");
                     me.closeModal();
@@ -366,7 +425,13 @@
                   'reference': this.reference,
                   'cp': this.cp,
                   'cuit': this.cuit,
-                  'tax': this.tax
+                  'tax': this.tax,
+                  'address': this.address,
+                  'locality': this.locality,
+                  'province': this.province,
+                  'phone_number': this.phone_number,
+                  'nextel_number': this.nextel_number,
+                  'cell_number': this.cell_number
                 }).then(function(response){
                     me.$snotify.success("Cliente Actualizado", "Exitosamente..!");
                     me.closeModal();
@@ -480,6 +545,12 @@
                 this.cp = '';
                 this.cuit = '';
                 this.tax ='';
+                this.address ='';
+                this.locality ='';
+                this.province ='';
+                this.phone_number ='';
+                this.nextel_number ='';
+                this.cell_number ='';
             },
             openModal(model, action, data = []) {
                 this.errors = {};
@@ -511,6 +582,12 @@
                                 this.cp = '';
                                 this.cuit = '';
                                 this.tax ='';
+                                this.address ='';
+                                this.locality ='';
+                                this.province ='';
+                                this.phone_number ='';
+                                this.nextel_number ='';
+                                this.cell_number ='';
                                 break;
                             case "update":
                                 // console.log(data)
@@ -529,6 +606,12 @@
                                 this.cp = data['cp'];
                                 this.cuit = data['cuit'];
                                 this.tax = data['tax'];
+                                this.address = data['address'];
+                                this.locality = data['locality'];
+                                this.province = data['province'];
+                                this.phone_number = data['phone_number'];
+                                this.nextel_number = data['nextel_number'];
+                                this.cell_number = data['cell_number'];
                                 break;
                             case "show":
                                 this.modalShow = 'show_';
