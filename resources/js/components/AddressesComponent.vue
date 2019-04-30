@@ -10,18 +10,18 @@
             <!-- Ejemplo de tabla Listado -->
             <div class="card">
                 <div class="card-header">
-                    <i class="fas fa-user-tag"></i> Clientes
-                    <!-- <i class="fa fa-align-justify"></i> Clientes -->
-                    <button @click="openModal('client','insert')" type="button" class="btn btn-secondary float-right">
+                    <i class="fas fa-map-marked"></i> Direcciones
+                    <!-- <i class="fa fa-align-justify"></i> Direcciones -->
+                    <!-- <button @click="openModal('client','insert')" type="button" class="btn btn-secondary float-right">
                         <i class="icon-plus"></i>&nbsp;Nuevo
-                    </button>
+                    </button> -->
                 </div>
                 <div class="card-body">
                     <div class="form-group row">
                         <div class="col-md-2">
                             <select class="form-control" v-model="queryField">
                               <option value="name">Nombre</option>
-                              <option value="email">Email</option>
+                              <option value="code">Código</option>
                             </select>
                         </div>
                   
@@ -41,24 +41,24 @@
                                 <tr>
                                     <th width="150">Opciones</th>
                                     <th>Código</th>
-                                    <th width="300">Nombre</th>
-                                    <th width="300">Razópn Social</th>
-                                    <th>Nickname</th>
-                                    <th>Email</th>
-                                    <th width="100">Fecha Nac</th>
-                                    <th>Estado</th>
+                                    <th>Nombre y Apellido</th>
+                                    <th width="500">Dirección</th>
+                                    <th>Localidad</th>
+                                    <th>Provincia</th>
+                                    <th>Teléfono</th>
+                                    <th>Celular</th>
+                                    <th>Nextel</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr v-for="client in arrayClients" :key="client.id">
+                                <tr v-for="item in arrayAddresses" :key="item.id">
                                     <td>
-                                    <a v-show="!client.deleted_at" @click="openModal('client', 'update', client)" href="#" class="btn btn-link text-success" title="Editar"><strong><i class="fas fa-pencil-alt"></i></strong></a>
-                                    <a v-show="client.deleted_at" @click="openModal('client', 'update', client)" href="#" class="btn btn-link text-success isDisabled" title="Editar"><strong><i class="fas fa-pencil-alt"></i></strong></a>
+                                    <a @click="openModal('address', 'update', item)" href="#" class="btn btn-link text-success" title="Editar"><strong><i class="fas fa-pencil-alt"></i></strong></a>
 
-                                    <a @click="openModal('client', 'show', client)" href="#" class="btn btn-link text-info" title="Ver"><strong><i class="fas fa-eye"></i></strong></a>
+                                    <a @click="openModal('address', 'show', item)" href="#" class="btn btn-link text-info" title="Ver"><strong><i class="fas fa-eye"></i></strong></a>
 
-                                    <a v-if="client.deleted_at" @click="restore(client)" href="#" class="btn btn-link text-warning" title="Restaurar"><strong><i class="fas fa-trash-restore"></i></strong></a>
-                                    <a v-else @click="destroy(client)" href="#" class="btn btn-link text-danger" title="Eliminar"><strong><i class="fas fa-trash-alt"></i></strong></a>
+                                    <!-- <a v-if="item.deleted_at" @click="restore(item)" href="#" class="btn btn-link text-warning" title="Restaurar"><strong><i class="fas fa-trash-restore"></i></strong></a> -->
+                                    <a @click="destroy(item)" href="#" class="btn btn-link text-danger isDisabled" title="Eliminar"><strong><i class="fas fa-trash-alt"></i></strong></a>
 <!-- 
                                     <button @click="openModal('client', 'update', client)" type="button" class="col-3 btn btn-warning btn-sm">
                                       <i class="icon-pencil"></i>
@@ -70,23 +70,25 @@
                                       <i class="icon-trash"></i>
                                     </button> -->
                                     </td>
-                                    <td v-text="client.code"></td>
-                                    <td v-text="client.name"></td>
-                                    <td v-text="client.razon_social"></td>
-                                    <td v-text="client.nickname"></td>
-                                    <td v-text="client.email"></td>
-                                    <td v-text="client.birth_date"></td>
-                                    <td>
-                                        <div v-if="!client.deleted_at">
+                                    <td v-text="item.code"></td>
+                                    <td v-text="item.name"></td>
+                                    <td v-text="item.address"></td>
+                                    <td v-text="item.locality"></td>
+                                    <td v-text="item.province"></td>
+                                    <td v-text="item.phone_number"></td>
+                                    <td v-text="item.cell_number"></td>
+                                    <td v-text="item.nextel_number"></td>
+                                    <!-- <td>
+                                        <div v-if="!item.deleted_at">
                                             <span class="badge badge-success">Activo</span>
                                         </div>
                                         <div v-else>
                                             <span class="badge badge-danger">Desactivado</span>
                                         </div>
-                                    </td>
+                                    </td> -->
                                 </tr>
-                                <tr class="table-danger" v-show="!arrayClients.length">
-                                    <td colspan="8">
+                                <tr class="table-danger" v-show="!arrayAddresses.length">
+                                    <td colspan="9">
                                        Lo sentimos no se encuentra la información de este Cliente :(  ! 
                                     </td>
                                 </tr>
@@ -124,15 +126,15 @@
                         <div>
                             <div class="row">
                                <div class="col-md-6">
-                                    <div v-if="personData==1" class="float-left"><strong ><i class="fas fa-address-card">&nbsp;</i></strong> Datos Personales</div>
-                                   <div v-if="personData==0" class="float-left"><strong ><i class="fas fa-map-marked-alt">&nbsp;</i></strong> Dirección del Cliente: 
+                                    <!-- <div v-if="personData==1" class="float-left"><strong ><i class="fas fa-address-card">&nbsp;</i></strong> Datos Personales</div> -->
+                                   <div class="float-left"><strong ><i class="fas fa-map-marked-alt">&nbsp;</i></strong> Dirección del Cliente: 
                                    <strong v-text="name"></strong>
                                    </div>
                                </div>
-                                <div class="col-md-6">
+                                <!-- <div class="col-md-6">
                                     <button v-if="personData==0" @click="personData=1" class="btn btn-primary btn-sm float-right">Datos Personales</button>
                                     <button v-if="personData==1" @click="personData=0" class="btn btn-success btn-sm float-right"><i class="icon-plus"></i>&nbsp; Dirección</button>
-                                </div>
+                                </div> -->
                             </div>
                             <hr>
                         </div>
@@ -148,67 +150,19 @@
                                 <div class="form-group row">
                                     <label class="col-md-3 form-control-label" for="text-input">Nombre</label>
                                     <div class="col-md-9">
-                                        <input type="text" v-on:keyup="clearErrors('name')" id="nombre" name="nombre" class="form-control" placeholder="Nombres y Apellidos" v-model="name" :class="{ 'is-invalid': errors.name, 'is-valid': name }">
-                                        <small class="error-control text-danger" v-if="errors.name">{{ errors.name[0] }}</small>
-                                        <span class="help-block">(*) Ingrese el nombre completo</span>
+                                        <input type="text" class="form-control" placeholder="Nombres y Apellidos" v-model="name" readonly>
                                     </div>
                                 </div>
-                                <div class="form-group row">
+
+                                <!-- <div class="form-group row">
                                     <label class="col-md-3 form-control-label" for="text-input">Razón Social</label>
                                     <div class="col-md-9">
                                         <input type="text" v-on:keyup="clearErrors('razon_social')" id="nombre" name="nombre" class="form-control" placeholder="Razón Social" v-model="razon_social" :class="{ 'is-invalid': errors.razon_social, 'is-valid': razon_social }">
                                         <small class="error-control text-danger" v-if="errors.razon_social">{{ errors.razon_social[0] }}</small>
                                         <span class="help-block">(*) Ingrese Razón Social</span>
                                     </div>
-                                </div>
-                                <div class="form-group row">
-                                    <label class="col-md-3 form-control-label" for="email-input">Email y Nickname</label>
-                                    <div class="col-md-9">
-                                        <div class="row">
-                                            <div class="col-md-8">
-                                                <input type="email" v-on:keyup="clearErrors('email')" id="email" name="email" class="form-control" placeholder="Email" v-model="email" :class="{ 'is-invalid': errors.email, 'is-valid': email }">
-                                                <small class="error-control text-danger" v-if="errors.email">{{ errors.email[0] }}</small>
-                                                <span class="help-block">(*) Ingrese Email</span>
-                                            </div>
-                                            <div class="col-md-4">
-                                                <input type="text" v-on:keyup="clearErrors('nickname')" id="nickname" name="nickname" class="form-control" placeholder="Nickname" v-model="nickname" :class="{ 'is-invalid': errors.nickname, 'is-valid': nickname }">
-                                                <small class="error-control text-danger" v-if="errors.nickname">{{ errors.nickname[0] }}</small>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="form-group row">
-                                    <label class="col-md-3 col-form-label" for="date-input">Fecha de Nac.</label>
-                                    <div class="col-md-9">
-                                        <input class="form-control" v-on:keyup="clearErrors('birth_date')" v-on:click="clearErrors('birth_date')" id="date-input" type="date" name="date-input" placeholder="date" v-model="birth_date" :class="{ 'is-invalid': errors.birth_date, 'is-valid': birth_date }">
-                                        <small class="error-control text-danger" v-if="errors.birth_date">{{ errors.birth_date[0] }}</small>
-                                        <span class="help-block">Por favor colocar fecha valida</span>
-                                    </div>
-                                </div>
-                                <div class="form-group row">
-                                    <label class="col-md-3 col-form-label" for="textarea-input">Referencia</label>
-                                    <div class="col-md-9">
-                                        <textarea class="form-control" id="textarea-input" name="textarea-input" rows="2" placeholder="Referencia.." v-model="reference"></textarea>
-                                    </div>
-                                </div>
-                                <div class="form-group row">
-                                    <label class="col-md-3 col-form-label" for="text-input ">CP / CUIT / IMP.</label>
-                                    <div class="form-group col-sm-3">
-                                        <input v-on:keyup="clearErrors('cp')" class="form-control" type="text" placeholder="CP" v-model="cp" :class="{ 'is-invalid': errors.cp, 'is-valid': cp }">
-                                        <small class="error-control text-danger" v-if="errors.cp">{{ errors.cp[0] }}</small>      
-                                    </div>
-                                    <div class="form-group col-sm-3">
-                                        <input v-on:keyup="clearErrors('cuit')" class="form-control" id="cuit" type="text" placeholder="cuit" v-model="cuit" :class="{ 'is-invalid': errors.cuit, 'is-valid': cuit }">
-                                        <small class="error-control text-danger" v-if="errors.cuit">{{ errors.cuit[0] }}</small>
-                                    </div>
-                                    <div class="form-group col-sm-3">
-                                      <input v-on:keyup="clearErrors('tax')" class="form-control" id="tax" type="number" placeholder="0.00" v-model="tax" :class="{ 'is-invalid': errors.tax, 'is-valid': tax }">
-                                      <small class="error-control text-danger" v-if="errors.tax">{{ errors.tax[0] }}</small>
-                                    </div>
-                                </div>
-                            </div>
-                            <!-- Model Address -->
-                            <div v-else>
+                                </div> -->
+                                <hr>
                                 <div class="form-group row">
                                     <label class="col-md-3 col-form-label" for="textarea-input">Dirección</label>
                                     <div class="col-md-9">
@@ -272,7 +226,7 @@
         <!--Fin del modal-->
 
         <transition name="fade" mode="out-in">
-            <show-component :show='modalShow' :client="arrayClient"  @closeRequest='closeModal'></show-component>
+            <show-component :show='modalShow' :client="arrayAddress"  @closeRequest='closeModal'></show-component>
         </transition>
         <vue-snotify></vue-snotify>
     </main>
@@ -299,8 +253,8 @@
                 phone_number: '',
                 nextel_number: '',
                 cell_number: '',
-                arrayClients: [],
-                arrayClient: [],
+                arrayAddresses: [],
+                arrayAddress: [],
                 modal: 0,
                 modalShow: '',
                 titleModal: '',
@@ -329,11 +283,11 @@
         methods: {
             getData() {
                 let me = this;
-                axios.get('/clientes?page=' + this.pagination.current_page).then(function (response) {
+                axios.get('/direccion?page=' + this.pagination.current_page).then(function (response) {
                     // handle success
                     var result = response.data
-                    me.arrayClients = result.clients.data;
-                    me.pagination = result.clients;
+                    me.arrayAddresses = result.addresses.data;
+                    me.pagination = result.addresses;
                   })
                   .catch(function (error) {
                     // handle error
@@ -341,61 +295,61 @@
                 })
             },
             searchData() {
-                axios.get('api/clientes/buscar/'+ this.queryField + '/' + this.query)
+                axios.get('api/direcciones/buscar/'+ this.queryField + '/' + this.query)
                     .then(response => {
                         // handle success
                         var result = response.data
                         console.log(result)
-                        this.arrayClients = result.clients.data;
-                        this.pagination = result.clients;
+                        this.arrayAddresses = result.addresses.data;
+                        this.pagination = result.addresses;
                     }).catch(function (error) {
                         // handle error
                         console.log(error);
                     })
             },
-            store() {
-                this.errors = {}
-                let me = this;
+            // store() {
+            //     this.errors = {}
+            //     let me = this;
 
-                axios.post('/clientes',{
-                  'code': this.code,  
-                  'name': this.name,
-                  'razon_social': this.razon_social,
-                  'nickname': this.nickname,
-                  'email':  this.email,
-                  'birth_date': this.birth_date,
-                  'reference': this.reference,
-                  'cp': this.cp,
-                  'cuit': this.cuit,
-                  'tax': this.tax,
-                  'address': this.address,
-                  'locality': this.locality,
-                  'province': this.province,
-                  'phone_number': this.phone_number,
-                  'nextel_number': this.nextel_number,
-                  'cell_number': this.cell_number
-                }).then(function(response){
-                    me.$snotify.success("Cliente Registrado", "Exitosamente..!");
-                    me.closeModal();
-                    me.getData();
-                }).catch(function(error) {
-                    if(error.response.status === 422) {
-                        me.errors = error.response.data.errors
-                        me.arrayError = me.errors
-                        console.log(me.errors)
-                    }
-                    me.$snotify.error(
-                      "Se presento un error vuelva a intentarlo.",
-                      "Error"
-                    );
-                });
+            //     axios.post('/Addresses',{
+            //       'code': this.code,  
+            //       'name': this.name,
+            //       'razon_social': this.razon_social,
+            //       'nickname': this.nickname,
+            //       'email':  this.email,
+            //       'birth_date': this.birth_date,
+            //       'reference': this.reference,
+            //       'cp': this.cp,
+            //       'cuit': this.cuit,
+            //       'tax': this.tax,
+            //       'address': this.address,
+            //       'locality': this.locality,
+            //       'province': this.province,
+            //       'phone_number': this.phone_number,
+            //       'nextel_number': this.nextel_number,
+            //       'cell_number': this.cell_number
+            //     }).then(function(response){
+            //         me.$snotify.success("Cliente Registrado", "Exitosamente..!");
+            //         me.closeModal();
+            //         me.getData();
+            //     }).catch(function(error) {
+            //         if(error.response.status === 422) {
+            //             me.errors = error.response.data.errors
+            //             me.arrayError = me.errors
+            //             console.log(me.errors)
+            //         }
+            //         me.$snotify.error(
+            //           "Se presento un error vuelva a intentarlo.",
+            //           "Error"
+            //         );
+            //     });
 
-            },
+            // },
             update() {
                 this.errors = {}
                 let me = this;
 
-                axios.put(`/clientes/${this.client_id}`,{
+                axios.put(`/direccion/${this.client_id}`,{
                   'id': this.client_id,  
                   'code': this.code,  
                   'name': this.name,
@@ -414,7 +368,7 @@
                   'nextel_number': this.nextel_number,
                   'cell_number': this.cell_number
                 }).then(function(response){
-                    me.$snotify.success("Cliente Actualizado", "Exitosamente..!");
+                    me.$snotify.success("Dirección Actualizada", "Exitosamente..!");
                     me.closeModal();
                     me.getData();
                 }).catch(function(error) {
@@ -429,92 +383,6 @@
                     );
                 });
 
-            },
-            destroy(client) {
-              this.$snotify.clear();
-              this.$snotify.confirm(
-                "Este registro solo podrá se activado por el Administrador!",
-                "Destivar Registro.?",
-                {
-                  showProgressBar: false,
-                  closeOnClick: false,
-                  pauseOnHover: true,
-                  buttons: [
-                    {
-                      text: "Si",
-                      action: toast => {
-                        this.$snotify.remove(toast.id);
-                        axios.delete(`/clientes/${client.id}`).then(response => {
-                            this.getData();
-                            this.$snotify.success(
-                              "Cliente Desactivado","Exitosamente..!");
-                          }).catch(function(error) {
-                            if(error.response.status === 422) {
-                                me.errors = error.response.data.errors
-                                me.arrayError = me.errors
-                                console.log(me.errors)
-                            }
-                            me.$snotify.error(
-                              "Se presento un error vuelva a intentarlo.",
-                              "Error"
-                            );
-                        });
-                      },
-                      bold: true
-                    },
-                    {
-                      text: "No",
-                      action: toast => {
-                        this.$snotify.remove(toast.id);
-                      },
-                      bold: true
-                    }
-                  ]
-                }
-              );
-            },
-            restore(client) {
-              this.$snotify.clear();
-              this.$snotify.confirm(
-                "Este registro será activado !",
-                "Activar Registro.?",
-                {
-                  showProgressBar: false,
-                  closeOnClick: false,
-                  pauseOnHover: true,
-                  buttons: [
-                    {
-                      text: "Si",
-                      action: toast => {
-                        this.$snotify.remove(toast.id);
-                        axios.get(`/clientes/restaurar/${client.id}`).then(response => {
-                            this.getData();
-                            this.$snotify.success(
-                              "Cliente fue Restaurado","Exitosamente..!");
-                          }).catch(function(error) {
-                            if(error.response.status === 422) {
-                                me.errors = error.response.data.errors
-                                me.arrayError = me.errors
-                                console.log(me.errors)
-                            }
-                            me.$snotify.error(
-                              "Se presento un error vuelva a intentarlo.",
-                              "Error"
-                            );
-                        });
-                      },
-                      bold: true
-                    },
-                    {
-                      text: "No",
-                      action: toast => {
-                        this.$snotify.remove(toast.id);
-                      },
-                      bold: true
-                    }
-                  ]
-                }
-              );
             },
             clearErrors(error) {
 
@@ -579,11 +447,11 @@
             openModal(model, action, data = []) {
                 this.errors = {};
                 switch (model) {
-                    case "client":
+                    case "address":
                         switch (action) {
                             case "insert":
                             let me = this;
-                                axios.get('/clientes/create').then(function (response) {
+                                axios.get('/direccion/create').then(function (response) {
                                     // handle success
                                     me.code = response.data.code;
                                     console.log(me.code)
@@ -596,7 +464,7 @@
                                 this.modal = 1;
                                 this.personData = 1;
                                 this.typeAction = 1;
-                                this.titleModal = 'Nuevo Cliente'
+                                this.titleModal = 'Nuevo Dirección'
                                 this.name = '';
                                 this.razon_social = '';
                                 this.nickname = '';
@@ -618,7 +486,7 @@
                                 this.modal = 1;
                                 this.personData = 1;
                                 this.typeAction = 2;
-                                this.titleModal = 'Actualizar Cliente';
+                                this.titleModal = 'Actualizar Dirección';
                                 this.client_id = data['id'];
                                 this.code = data['code'];
                                 this.name = data['name'];
@@ -639,9 +507,7 @@
                                 break;
                             case "show":
                                 this.modalShow = 'show_';
-                                this.arrayClient = data;
-                                // this.$children[2].client = data;
-
+                                this.arrayAddress = data;
                                 break;
                         }
 

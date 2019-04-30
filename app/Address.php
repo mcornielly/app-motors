@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Address extends Model
 {
+    use \Askedio\SoftCascade\Traits\SoftCascadeTrait;
 
     use SoftDeletes;
 

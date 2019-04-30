@@ -17,4 +17,6 @@ Route::get('/', function () {
 
 
 Route::resource('clientes', 'ClientController');
+Route::get('clientes/restaurar/{id}', 'ClientController@restore')->name('clients.restore');
 
+Route::resource('direccion', 'AddressController');

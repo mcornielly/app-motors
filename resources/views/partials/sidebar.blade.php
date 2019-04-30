@@ -8,13 +8,13 @@
                 Mantenimiento
             </li>
             <li class="nav-item nav-dropdown">
-                <a class="nav-link nav-dropdown-toggle" href="#"><i class="far fa-address-book"></i> Gestión de Clientes</a>
+                <a class="nav-link nav-dropdown-toggle" href="#"><i class="fas fa-address-book"></i> Gestión de Clientes</a>
                 <ul class="nav-dropdown-items">
                     <li @click="menu=1" class="nav-item">
-                        <a class="nav-link" href="#"><i class="icon-bag"></i> Clientes</a>
+                        <a class="nav-link" href="#"><i class="fas fa-user-tag"></i> Clientes</a>
                     </li>
                     <li @click="menu=2" class="nav-item">
-                        <a class="nav-link" href="#"><i class="icon-bag"></i> Direcciones</a>
+                        <a class="nav-link" href="#"><i class="fas fa-map-marked"></i> Direcciones</a>
                     </li>
                 </ul>
             </li>

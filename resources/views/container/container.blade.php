@@ -8,7 +8,7 @@
 		<clients-component></clients-component>
 	</template>
 	<template v-if="menu==2">
-		<h1>       Direcciones</h1>
+		<addresses-component></addresses-component>
 	</template>
 	<template v-if="menu==3">
 		<h1>       Ordenes</h1>

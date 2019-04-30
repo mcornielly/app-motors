@@ -18,3 +18,4 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 });
 
 Route::get('clientes/buscar/{field}/{query}', 'ClientController@search');
+Route::get('direcciones/buscar/{field}/{query}', 'AddressController@search');

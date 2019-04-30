@@ -155,7 +155,7 @@ class ClientController extends Controller
      */
     public function update(Request $request, Client $client)
     {
-        // if(!$request->ajax()) return redirect('/');
+        if(!$request->ajax()) return redirect('/');
 
         $client = Client::findOrFail($request->id);
         $client_id = $client->id;
@@ -212,13 +212,19 @@ class ClientController extends Controller
      */
     public function destroy(Request $request, $id)
     {
-        
-        // $client = lient::withTrashed()
-        //         ->where('id', $id)
-        //         ->get();
-
-
         $client = Client::findOrFail($id);
         $client->delete();
+    }
+    
+    public function restore(Request $request, $id)
+    {
+        $client_id = $id;
+
+        $client = Client::withTrashed($id)
+                ->restore();
+
+        $address = Address::withTrashed($client_id)
+                ->restore();
+                
     }
 }
