@@ -23,27 +23,27 @@
 					<table class="table table-sm">
 						<tr>
 							<th>Nombre:</th>
-							<td colspan="3" v-text="client.name"></td>
+							<td colspan="3" v-text="data.name"></td>
 							<th>N° Código:</th>
-							<td v-text="client.code"></td>
+							<td v-text="data.code"></td>
 						</tr>
 						<tr>
 							<th>Razón Social:</th>
-							<td colspan="5" v-text="client.razon_social"></td>
+							<td colspan="5" v-text="data.razon_social"></td>
 						</tr>
 						<tr>
 							<th>Email:</th>
-							<td colspan="3" v-text="client.email"></td>
+							<td colspan="3" v-text="data.email"></td>
 							<th>Nickname:</th>
-							<td v-text="client.nickname"></td>
+							<td v-text="data.nickname"></td>
 						</tr>
 						<tr>
 							<th>CP:</th>
-							<td v-text="client.cp"></td>
+							<td v-text="data.cp"></td>
 							<th>CUIT:</th>
-							<td v-text="client.cuit"></td>
+							<td v-text="data.cuit"></td>
 							<th>Impuesto:</th>
-							<td v-text="client.tax"></td>
+							<td v-text="data.tax"></td>
 						</tr>
 					</table>	
                   </div>
@@ -61,21 +61,21 @@
 					<table class="table table-sm">
 						<tr>
 							<th>Dirección:</th>
-							<td colspan="5" v-text="client.address"></td>
+							<td colspan="5" v-text="data.address"></td>
 						</tr>
 						<tr>
 							<th>Localidad:</th>
-							<td colspan="2" v-text="client.locality"></td>
+							<td colspan="2" v-text="data.locality"></td>
 							<th class="text-right">Provincia:</th>
-							<td colspan="2"v-text="client.province"></td>
+							<td colspan="2"v-text="data.province"></td>
 						</tr>
 						<tr>
 							<th>Teléfono:</th>
-							<td v-text="client.phone_number"></td>
+							<td v-text="data.phone_number"></td>
 							<th>Celular:</th>
-							<td v-text="client.cell_number"></td>
+							<td v-text="data.cell_number"></td>
 							<th>Nextel:</th>
-							<td v-text="client.nextel_number"></td>
+							<td v-text="data.nextel_number"></td>
 						</tr>
 					</table>	
                   </div>
@@ -96,7 +96,7 @@
 
 <script>
 	export default{
-		props:['show','client'],
+		props:['show','data'],
 		methods:{
 			closeModal() {
 				this.$emit('closeRequest')

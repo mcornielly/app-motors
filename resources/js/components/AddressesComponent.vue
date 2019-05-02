@@ -26,9 +26,9 @@
                         </div>
                   
                         <div class="input-group col-md-6">
-                            <input class="form-control" v-model="query" type="text" placeholder="Search">
+                            <input class="form-control" v-model="query" type="text" placeholder="Buscar...">
                             <span class="input-group-append">
-                              <button class="btn btn-primary" type="button">
+                              <button class="btn btn-primary" type="button" disabled>
                                 <i class="fa fa-search"></i> Buscar
                               </button>
                             </span>
@@ -226,7 +226,7 @@
         <!--Fin del modal-->
 
         <transition name="fade" mode="out-in">
-            <show-component :show='modalShow' :client="arrayAddress"  @closeRequest='closeModal'></show-component>
+            <show-component :show='modalShow' :data="arrayAddress"  @closeRequest='closeModal'></show-component>
         </transition>
         <vue-snotify></vue-snotify>
     </main>

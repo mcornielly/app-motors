@@ -121,7 +121,6 @@ class ClientController extends Controller
             DB::rollBack();
         }
         
-    
     }
 
     /**
@@ -159,7 +158,7 @@ class ClientController extends Controller
 
         $client = Client::findOrFail($request->id);
         $client_id = $client->id;
-        $address = Address::findOrfail($client_id);
+        $address = Address::findOrFail($client_id);
 
         $request->validate([
             'name'  => 'required|string',

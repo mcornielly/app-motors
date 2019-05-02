@@ -22,7 +22,10 @@ window.Vue = require('vue');
 
 Vue.component('clients-component', require('./components/ClientsComponent.vue').default);
 Vue.component('addresses-component', require('./components/AddressesComponent.vue').default);
+Vue.component('roles-component', require('./components/RolesComponent.vue').default);
+Vue.component('users-component', require('./components/UsersComponent.vue').default);
 Vue.component('show-component', require('./components/partials/ShowComponent.vue').default);
+Vue.component('show-user-component', require('./components/partials/ShowUserComponent.vue').default);
 Vue.component('pagination-component', require('./components/partials/PaginationComponent.vue').default);
 
 /**

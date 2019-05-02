@@ -26,16 +26,16 @@
                         </div>
                   
                         <div class="input-group col-md-6">
-                            <input class="form-control" v-model="query" type="text" placeholder="Search">
+                            <input class="form-control" v-model="query" type="text" placeholder="Buscar...">
                             <span class="input-group-append">
-                              <button class="btn btn-primary" type="button">
+                              <button class="btn btn-primary" type="button" disabled>
                                 <i class="fa fa-search"></i> Buscar
                               </button>
                             </span>
                         </div>
                     </div>
                    
-                    <div id="div1" class="table-responsive-sm">
+                    <div class="table-responsive-sm">
                         <table class="table table-bordered table-striped table-sm">
                             <thead>
                                 <tr>
@@ -50,15 +50,15 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr v-for="client in arrayClients" :key="client.id">
+                                <tr v-for="item in arrayClients" :key="item.id">
                                     <td>
-                                    <a v-show="!client.deleted_at" @click="openModal('client', 'update', client)" href="#" class="btn btn-link text-success" title="Editar"><strong><i class="fas fa-pencil-alt"></i></strong></a>
-                                    <a v-show="client.deleted_at" @click="openModal('client', 'update', client)" href="#" class="btn btn-link text-success isDisabled" title="Editar"><strong><i class="fas fa-pencil-alt"></i></strong></a>
+                                    <a v-show="!item.deleted_at" @click="openModal('client', 'update', item)" href="#" class="btn btn-link text-success" title="Editar"><strong><i class="fas fa-pencil-alt"></i></strong></a>
+                                    <a v-show="item.deleted_at" @click="openModal('client', 'update', item)" href="#" class="btn btn-link text-success isDisabled" title="Editar"><strong><i class="fas fa-pencil-alt"></i></strong></a>
 
-                                    <a @click="openModal('client', 'show', client)" href="#" class="btn btn-link text-info" title="Ver"><strong><i class="fas fa-eye"></i></strong></a>
+                                    <a @click="openModal('client', 'show', item)" href="#" class="btn btn-link text-info" title="Ver"><strong><i class="fas fa-eye"></i></strong></a>
 
-                                    <a v-if="client.deleted_at" @click="restore(client)" href="#" class="btn btn-link text-warning" title="Restaurar"><strong><i class="fas fa-trash-restore"></i></strong></a>
-                                    <a v-else @click="destroy(client)" href="#" class="btn btn-link text-danger" title="Eliminar"><strong><i class="fas fa-trash-alt"></i></strong></a>
+                                    <a v-if="item.deleted_at" @click="restore(item)" href="#" class="btn btn-link text-warning" title="Restaurar"><strong><i class="fas fa-trash-restore"></i></strong></a>
+                                    <a v-else @click="destroy(item)" href="#" class="btn btn-link text-danger" title="Eliminar"><strong><i class="fas fa-trash-alt"></i></strong></a>
 <!-- 
                                     <button @click="openModal('client', 'update', client)" type="button" class="col-3 btn btn-warning btn-sm">
                                       <i class="icon-pencil"></i>
@@ -70,14 +70,14 @@
                                       <i class="icon-trash"></i>
                                     </button> -->
                                     </td>
-                                    <td v-text="client.code"></td>
-                                    <td v-text="client.name"></td>
-                                    <td v-text="client.razon_social"></td>
-                                    <td v-text="client.nickname"></td>
-                                    <td v-text="client.email"></td>
-                                    <td v-text="client.birth_date"></td>
+                                    <td v-text="item.code"></td>
+                                    <td v-text="item.name"></td>
+                                    <td v-text="item.razon_social"></td>
+                                    <td v-text="item.nickname"></td>
+                                    <td v-text="item.email"></td>
+                                    <td v-text="item.birth_date"></td>
                                     <td>
-                                        <div v-if="!client.deleted_at">
+                                        <div v-if="!item.deleted_at">
                                             <span class="badge badge-success">Activo</span>
                                         </div>
                                         <div v-else>
@@ -272,7 +272,7 @@
         <!--Fin del modal-->
 
         <transition name="fade" mode="out-in">
-            <show-component :show='modalShow' :client="arrayClient"  @closeRequest='closeModal'></show-component>
+            <show-component :show='modalShow' :data="arrayClient"  @closeRequest='closeModal'></show-component>
         </transition>
         <vue-snotify></vue-snotify>
     </main>
@@ -345,7 +345,6 @@
                     .then(response => {
                         // handle success
                         var result = response.data
-                        console.log(result)
                         this.arrayClients = result.clients.data;
                         this.pagination = result.clients;
                     }).catch(function (error) {
@@ -640,8 +639,6 @@
                             case "show":
                                 this.modalShow = 'show_';
                                 this.arrayClient = data;
-                                // this.$children[2].client = data;
-
                                 break;
                         }
 

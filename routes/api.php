@@ -19,3 +19,5 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 
 Route::get('clientes/buscar/{field}/{query}', 'ClientController@search');
 Route::get('direcciones/buscar/{field}/{query}', 'AddressController@search');
+Route::get('roles/buscar/{field}/{query}', 'RoleController@search');
+Route::get('usuarios/buscar/{field}/{query}', 'UserController@search');

@@ -11,7 +11,7 @@
 
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <link rel="shortcut icon" href="img/favicon.png">
-    <title>Sistema Ventas - IncanatoIT</title>
+    <title>Sistema App - Motors</title>
     
     <!-- css styles -->
     <link href="css/template.css" rel="stylesheet">
@@ -60,25 +60,37 @@
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle nav-link" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
                         <img src="img/avatars/6.jpg" class="img-avatar" alt="admin@bootstrapmaster.com">
-                        <span class="d-md-down-none">admin </span>
+                        <span class="d-md-down-none">{{Auth::user()->name}}</span>
                     </a>
                     <div class="dropdown-menu dropdown-menu-right">
                         <div class="dropdown-header text-center">
                             <strong>Cuenta</strong>
                         </div>
                         <a class="dropdown-item" href="#"><i class="fa fa-user"></i> Perfil</a>
-                        <a class="dropdown-item" href="#"><i class="fa fa-lock"></i> Cerrar sesión</a>
+                        <a class="dropdown-item" href="{{ route('logout') }}" onclick="event.preventDefault();
+                        document.getElementById('logout-form').submit();"><i class="fa fa-lock"></i> Cerrar sesión</a>
+                        
+                            <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                                @csrf
+                            </form>
                     </div>
                 </li>
             </ul>
         </header>
 
         <div class="app-body">
-            <!-- Sidebar -->
-            @include('partials.sidebar')
+            <!-- Start Sidebar -->
+            @if(Auth::check())
+                @if(Auth::user()->role_id == 1)
+                    @include('partials.sidebaradmin')
+                @else(Auth::user()->role_id == 2)
+                    @include('partials.sidebaruser')
+                @endif
+            @endif
+            <!-- End Siderbar -->
             <!-- Contenido Principal -->
             @yield('container')
-            <!-- /Fin del contenido principal -->
+            <!-- Fin del contenido principal -->
         </div>
     </div>    
 
