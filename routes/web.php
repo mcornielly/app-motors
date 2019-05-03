@@ -18,13 +18,13 @@
 // Route::get('/home', 'HomeController@index')->name('home');
 
 Route::group(['middleware' => ['guest']], function(){
+	Auth::routes();
 	Route::get('/', 'Auth\LoginController@showLoginForm');
 	Route::post('/login', 'Auth\LoginController@login')->name('login');
-	Route::post('/register', 'Auth\RegisterController@index')->name('register'); 
+	// Route::post('/register', 'Auth\RegisterController@index')->name('register'); 
 });
 
 Route::group(['middleware' => ['auth']], function(){
-	// Auth::routes();
 	//Auth
 	Route::get('/home', 'HomeController@index')->name('home');
 	Route::post('/logout','Auth\LoginController@logout')->name('logout');	

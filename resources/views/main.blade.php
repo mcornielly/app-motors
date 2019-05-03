@@ -18,7 +18,15 @@
     <link href="css/app.css" rel="stylesheet">
     
 </head>
+<style>
+    #footer {
+    width: auto;
+    height: 200px;
+    
+    margin-top:-200px;
 
+}
+</style>
 <body class="app header-fixed sidebar-fixed aside-menu-fixed aside-menu-hidden">
     <div id="app">
         <header class="app-header navbar">
@@ -92,9 +100,10 @@
             @yield('container')
             <!-- Fin del contenido principal -->
         </div>
+
     </div>    
 
-    <footer class="app-footer">
+    <footer class="app-footer" style="bottom: 0;">
         <span><a href="http://www.incanatoit.com/">IncanatoIT</a> &copy; 2017</span>
         <span class="ml-auto">Desarrollado por <a href="http://www.incanatoit.com/">IncanatoIT</a></span>
     </footer>
@@ -102,6 +111,13 @@
     <!-- Bootstrap and necessary plugins -->
     <script src="js/app.js"></script>
     <script src="js/template.js"></script>
+
+    <script>
+        jQuery(document).ready(function(){
+//Cuando el DOM está disponible.
+jQuery("#main").css("min-height", (jQuery(window).height()-jQuery("footer").outerHeight()-jQuery("header").outerHeight()+"px"));
+})
+    </script>
     
 <!--     <script src="js/jquery.min.js"></script>
     <script src="js/popper.min.js"></script>
@@ -109,7 +125,7 @@
     <script src="js/Chart.min.js"></script>
     <script src="js/pace.min.js"></script>
     <script src="js/template.js"></script>
-
-</body>
+ -->
+    </body>
 
 </html>

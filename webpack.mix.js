@@ -13,9 +13,9 @@ const mix = require('laravel-mix');
 
 mix.sass('resources/sass/app.scss','public/css/app.css')
 .styles([
-	'resources/layout/css/style.css'
+	'resources/layout/css/style.css',
 	'resources/layout/css/font-awesome.min.css',
-	'resources/layout/css/simple-line-icons.min.css',
+	'resources/layout/css/simple-line-icons.min.css'
 ],	'public/css/template.css')
 .scripts([
 	'resources/layout/js/jquery.min.js',	
