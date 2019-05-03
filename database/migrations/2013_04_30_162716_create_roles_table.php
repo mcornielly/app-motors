@@ -17,7 +17,7 @@ class CreateRolesTable extends Migration
             $table->bigIncrements('id');
             $table->string('name')->unique();
             $table->string('description')->nullable();
-            $table->boolean()->default(1);
+            $table->boolean('condition')->default(1);
         });
 
         DB::table('roles')->insert(array('id' => 1, 'name' => 'Administardor', 'description' => 'Administrador de la app'));
